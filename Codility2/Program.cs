@@ -10,16 +10,25 @@ namespace Codility2
     {
         static void Main(string[] args)
         {
+            //Console.WriteLine(canPermutePalindrome("code").ToString());
+            //Console.WriteLine(canPermutePalindrome("aab").ToString());
+            Console.WriteLine(NumJewelsInStones("aA", "aAAbbbb").ToString());
+            Console.WriteLine(NumJewelsInStones("z", "ZZ").ToString());
+
+            //Console.WriteLine(Division(11, 345, 17).ToString());
+            //Console.WriteLine(Division(4, 22, 5).ToString());
+            //Console.WriteLine(Division(6, 12, 2).ToString());
+            //Console.WriteLine(Division(1, 4,4).ToString());
             //Console.WriteLine(TapeEquilibrium(new int[] { -1000,1000, 3 }).ToString());
             //Console.WriteLine(TapeEquilibrium(new int[] { 3, 1, 2, 4, 3 }).ToString());
             //Console.WriteLine(FrogRiverOne(5, new int[] { 1, 3, 1, 4, 2, 3,  4 , 5}).ToString());
-            Console.WriteLine(MissingInteger(new int[] { 1, 3, 6, 4, 1, 2 }).ToString());
-            Console.WriteLine(MissingInteger(new int[] { -1, -3 }).ToString());
-            Console.WriteLine(MissingInteger(new int[] { 1, 2, 3 }).ToString());
-            Console.WriteLine(MissingInteger(new int[] { -1, 0, 1, 2, 3 }).ToString());
-            Console.WriteLine(MissingInteger(new int[] { 0 }).ToString());
-            Console.WriteLine(MissingInteger(new int[] { 1 }).ToString());
-            Console.WriteLine(MissingInteger(new int[] { 1000001 }).ToString());
+            //Console.WriteLine(MissingInteger(new int[] { 1, 3, 6, 4, 1, 2 }).ToString());
+            //Console.WriteLine(MissingInteger(new int[] { -1, -3 }).ToString());
+            //Console.WriteLine(MissingInteger(new int[] { 1, 2, 3 }).ToString());
+            //Console.WriteLine(MissingInteger(new int[] { -1, 0, 1, 2, 3 }).ToString());
+            //Console.WriteLine(MissingInteger(new int[] { 0 }).ToString());
+            //Console.WriteLine(MissingInteger(new int[] { 1 }).ToString());
+            //Console.WriteLine(MissingInteger(new int[] { 1000001 }).ToString());
             //Console.WriteLine(PermCheck(new int[] { 1, 2 }).ToString());
             //Console.WriteLine(FrogJmp(10, 85, 30).ToString());
             //Console.WriteLine(Odd(new int[] { 9, 3, 9, 3, 9, 7, 9 }).ToString());
@@ -31,35 +40,190 @@ namespace Codility2
             //Console.WriteLine(MissingElement(A).ToString());
             //CyclicRotation(new int[] { }, 5, 6);
             //Console.WriteLine(Program.BinaryGap(328).ToString());
+
+
+            //var res = MaxCounters(5, new[] { 3, 4, 4, 6, 1, 4, 4 });
+            //foreach (int n in res)
+            //{
+            //    Console.WriteLine(n.ToString());
+            //}
+
+            //Console.WriteLine(NailingPlanks(new int[] {1,4,5,8 }, new int[] {4,5,9,10 }, new int[] {4,6,7,10,2 }).ToString());
         }
 
-        public static int MissingInteger(int[] A)
+        //public static int[] MaxCounters(int N, int[] A)
+        //{
+        //    int[] res = new int[N];
+
+        //    int max = 0;
+        //    int refresh_at = 0; ;
+        //    foreach (var n in A)
+        //    {
+        //        if (n > N)
+        //        {
+        //            refresh_at = max;
+        //        }
+        //        else
+        //        {
+        //            if(res[n - 1] < refresh_at)
+        //            {
+        //                res[n - 1] = refresh_at;
+        //            }
+
+        //            res[n - 1]++;
+
+        //            if (max < res[n - 1])
+        //            {
+        //                max = res[n - 1];
+        //            }
+        //        }
+        //    }
+
+        //    for (int i = 0; i < res.Length; i++)
+        //    {
+        //        if (res[i] < refresh_at)
+        //        {
+        //            res[i] = refresh_at;
+        //        }
+        //    }
+
+        //    return res;
+        //}
+
+        //public static int NailingPlanks(int[] A, int[] B, int[] C)
+        //{
+        //    int[] n = new 
+        //}
+
+        //public static int Division(int A, int B, int K)
+        //{
+        //    if (A == B)
+        //    {
+        //        if (A % K == 0)
+        //            return 1;
+        //        else
+        //            return 0;
+        //    }
+
+        //    int a_div = A / K;
+        //    int a_mod = A % K;
+
+        //    int new_A = A;
+        //    if(a_mod != 0)
+        //        new_A += (K - a_mod);
+
+        //    int b_div = B / K;
+        //    int b_mod = B % K;
+
+        //    int new_B = b_div * K;
+
+        //    if (new_B == new_A)
+        //    {
+        //        return 1;
+        //    }
+
+        //    int res = (new_B - new_A) / K;
+        //    if (res < 0)
+        //        return 0;
+
+        //    if (new_A != 0)
+        //        res++;
+
+        //    return res;
+        //}
+
+        public static int NumJewelsInStones(string J, string S)
         {
-            byte[] check = new byte[A.Length];
+            Dictionary<char, int> frequency = new Dictionary<char, int>();
 
-            int max = 0;
-
-            foreach (var n in A)
+            foreach (char c in S)
             {
-                if (n > check.Length)
-                    continue;
-                if (n > 0)
+                if (frequency.ContainsKey(c))
                 {
-                    check[n - 1] = 1;
+                    frequency[c]++;
                 }
-
-                if (n > max)
-                    max = n;
+                else
+                {
+                    frequency.Add(c, 1);
+                }
             }
 
-            for(int i = 0; i <check.Length; i++)
+            int jewels = 0;
+            foreach (char c in J)
             {
-                if (check[i] == 0)
-                    return i + 1;
+                if (frequency.ContainsKey(c))
+                    jewels += frequency[c];
             }
 
-            return max + 1;
+            return jewels;
         }
+
+        //static bool canPermutePalindrome(string s)
+        //{
+        //    Dictionary<char, int> frequency = new Dictionary<char, int>();
+
+        //    int odd = 0;
+        //    foreach (char c in s)
+        //    {
+        //        if (frequency.ContainsKey(c))
+        //        {
+        //            frequency[c]++;
+        //        }
+        //        else
+        //        {
+        //            frequency.Add(c,1);
+        //        }
+        //    }
+
+        //    foreach (KeyValuePair<char, int> c in frequency)
+        //    {
+        //        if (c.Value % 2 != 0)
+        //        {
+        //            odd++;
+        //        }
+        //    }
+
+        //    if (s.Length % 2 == 0)
+        //    {
+        //        if (odd != 0)
+        //            return false;
+        //    }
+        //    else
+        //    {
+        //        if (odd != 1)
+        //            return false;
+        //    }
+
+        //    return true;
+        //}
+
+        //public static int MissingInteger(int[] A)
+        //{
+        //    byte[] check = new byte[A.Length];
+
+        //    int max = 0;
+
+        //    foreach (var n in A)
+        //    {
+        //        if (n > check.Length)
+        //            continue;
+        //        if (n > 0)
+        //        {
+        //            check[n - 1] = 1;
+        //        }
+
+        //        if (n > max)
+        //            max = n;
+        //    }
+
+        //    for(int i = 0; i <check.Length; i++)
+        //    {
+        //        if (check[i] == 0)
+        //            return i + 1;
+        //    }
+
+        //    return max + 1;
+        //}
 
         //public static int FrogRiverOne(int X, int[] A)
         //{

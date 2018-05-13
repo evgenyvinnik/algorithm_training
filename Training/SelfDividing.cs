@@ -10,7 +10,7 @@ namespace Training
         private static bool SelfDividingNumber(int i)
         {
             HashSet<int> digits = new HashSet<int>();
-            
+
             foreach(char c in i.ToString())
             {
                 digits.Add(c - '0');
