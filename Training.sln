@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dijkstra2", "Dijkstra2\Dijk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knapsack", "Knapsack\Knapsack.csproj", "{957ED3E8-DD19-44A8-9CDE-E6689A957EE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sort", "Sort\Sort.csproj", "{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,18 @@ Global
 		{957ED3E8-DD19-44A8-9CDE-E6689A957EE9}.Release|x64.Build.0 = Release|Any CPU
 		{957ED3E8-DD19-44A8-9CDE-E6689A957EE9}.Release|x86.ActiveCfg = Release|Any CPU
 		{957ED3E8-DD19-44A8-9CDE-E6689A957EE9}.Release|x86.Build.0 = Release|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Debug|x64.Build.0 = Debug|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Debug|x86.Build.0 = Debug|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Release|x64.ActiveCfg = Release|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Release|x64.Build.0 = Release|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Release|x86.ActiveCfg = Release|Any CPU
+		{BBE3C937-BAFD-45D5-BE53-1A1C8CF9102B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
