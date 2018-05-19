@@ -12,8 +12,8 @@ namespace Codility2
         {
             //Console.WriteLine(canPermutePalindrome("code").ToString());
             //Console.WriteLine(canPermutePalindrome("aab").ToString());
-            Console.WriteLine(NumJewelsInStones("aA", "aAAbbbb").ToString());
-            Console.WriteLine(NumJewelsInStones("z", "ZZ").ToString());
+            //Console.WriteLine(NumJewelsInStones("aA", "aAAbbbb").ToString());
+            //Console.WriteLine(NumJewelsInStones("z", "ZZ").ToString());
 
             //Console.WriteLine(Division(11, 345, 17).ToString());
             //Console.WriteLine(Division(4, 22, 5).ToString());
@@ -49,7 +49,98 @@ namespace Codility2
             //}
 
             //Console.WriteLine(NailingPlanks(new int[] {1,4,5,8 }, new int[] {4,5,9,10 }, new int[] {4,6,7,10,2 }).ToString());
+
+            //int[][] b = new int[][] {new[]{ 1, 1, 0 }, new[] { 1, 0, 1 }, new[] { 0, 0, 0 } };
+            //FlipAndInvertImage(b );
+            //int[][] a = new int[][] { new[] { 1, 1, 0, 0 }, new[] { 1, 0, 0, 1 }, new[] { 0, 1, 1, 1 }, new[] { 1, 0, 1, 0 } };
+            //FlipAndInvertImage(a);
+            //ZigzagIterator i = new ZigzagIterator(new int[]{1, 2}, new int[] { 3, 4, 5, 6});
+            //while (i.HasNext())
+            //    Console.WriteLine( i.Next());
         }
+
+        //public class ZigzagIterator
+        //{
+        //    //pair? named tuple?
+        //    List<IList<int>> lists;
+        //    List<int> positions;
+
+        //    int selected;
+
+        //    public ZigzagIterator(IList<int> v1, IList<int> v2)
+        //    {
+        //        lists = new List<IList<int>> {v1, v2};
+        //        positions = new List<int> {0, 0};
+        //        selected = 0;
+        //    }
+
+        //    public bool HasNext()
+        //    {
+        //        bool hasNext = false;
+        //        int local_selected = selected;
+        //        for (int i = 0; i < lists.Count; i++)
+        //        {
+        //            if (positions[local_selected] < lists[local_selected].Count)
+        //            {
+        //                hasNext = true;
+        //                break;
+        //            }
+        //            local_selected++;
+        //            if (local_selected == lists.Count)
+        //                local_selected = 0;
+        //        }
+
+        //        return hasNext;
+        //    }
+
+        //    public int Next()
+        //    {
+        //        int value = 0;
+        //        bool value_found = false;
+
+        //        for (int i = 0; i < lists.Count; i++)
+        //        {
+        //            if (positions[selected] < lists[selected].Count)
+        //            {
+        //                value = lists[selected][positions[selected]];
+        //                positions[selected]++;
+        //                value_found = true;
+        //            }
+
+        //            selected++;
+        //            if (selected == lists.Count)
+        //                selected = 0;
+
+        //            if (value_found)
+        //                break;
+        //        }
+
+
+        //        return value;
+        //    }
+        //}
+
+
+        //public static int[][] FlipAndInvertImage(int[][] A)
+        //{
+        //    for (int j = 0; j < A.GetLength(0); j++)
+        //    {
+        //        for (int i = 0; i < Math.Round(Math.Ceiling(A[j].GetLength(0) / 2.0)); i++)
+        //        {
+        //            if (i == A.Length - i - 1)
+        //            {
+        //                A[j][i] = A[j][i] == 0 ? 1 : 0;
+        //                continue;
+        //            }
+
+        //            int c = A[j][i];
+        //            A[j][i] = A[j][A.Length - i - 1] == 0 ? 1 : 0;
+        //            A[j][A.Length - i - 1] = c == 0 ? 1 : 0;
+        //        }
+        //    }
+
+        //    return A;
+        //}
 
         //public static int[] MaxCounters(int N, int[] A)
         //{
@@ -132,31 +223,31 @@ namespace Codility2
         //    return res;
         //}
 
-        public static int NumJewelsInStones(string J, string S)
-        {
-            Dictionary<char, int> frequency = new Dictionary<char, int>();
+        //public static int NumJewelsInStones(string J, string S)
+        //{
+        //    Dictionary<char, int> frequency = new Dictionary<char, int>();
 
-            foreach (char c in S)
-            {
-                if (frequency.ContainsKey(c))
-                {
-                    frequency[c]++;
-                }
-                else
-                {
-                    frequency.Add(c, 1);
-                }
-            }
+        //    foreach (char c in S)
+        //    {
+        //        if (frequency.ContainsKey(c))
+        //        {
+        //            frequency[c]++;
+        //        }
+        //        else
+        //        {
+        //            frequency.Add(c, 1);
+        //        }
+        //    }
 
-            int jewels = 0;
-            foreach (char c in J)
-            {
-                if (frequency.ContainsKey(c))
-                    jewels += frequency[c];
-            }
+        //    int jewels = 0;
+        //    foreach (char c in J)
+        //    {
+        //        if (frequency.ContainsKey(c))
+        //            jewels += frequency[c];
+        //    }
 
-            return jewels;
-        }
+        //    return jewels;
+        //}
 
         //static bool canPermutePalindrome(string s)
         //{
