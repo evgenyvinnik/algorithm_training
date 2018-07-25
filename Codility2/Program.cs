@@ -40,8 +40,6 @@ namespace Codility2
             //Console.WriteLine(MissingElement(A).ToString());
             //CyclicRotation(new int[] { }, 5, 6);
             //Console.WriteLine(Program.BinaryGap(328).ToString());
-
-
             //var res = MaxCounters(5, new[] { 3, 4, 4, 6, 1, 4, 4 });
             //foreach (int n in res)
             //{
