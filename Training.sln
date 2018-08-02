@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trie", "Trie\Trie.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brackets", "Brackets\Brackets.csproj", "{8040DC33-A359-4710-BB16-66367C41CA30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trie2", "Trie2\Trie2.csproj", "{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -207,6 +209,18 @@ Global
 		{8040DC33-A359-4710-BB16-66367C41CA30}.Release|x64.Build.0 = Release|Any CPU
 		{8040DC33-A359-4710-BB16-66367C41CA30}.Release|x86.ActiveCfg = Release|Any CPU
 		{8040DC33-A359-4710-BB16-66367C41CA30}.Release|x86.Build.0 = Release|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Debug|x64.Build.0 = Debug|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Debug|x86.Build.0 = Debug|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Release|x64.Build.0 = Release|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7E470C78-CCA2-46B1-8ABF-ACAA9744708E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
