@@ -1,0 +1,12 @@
+﻿{
+  "Swears": [
+    {
+      "Type": "Phrase",
+      "SwearPhrase": "Блять!"
+    },
+    {
+      "Type": "Phrase",
+      "SwearPhrase": "Да нахуй!"
+    }
+  ]
+}
