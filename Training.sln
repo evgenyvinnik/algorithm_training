@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonTest", "JsonTest\JsonTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FibonacciDynamic", "FibonacciDynamic\FibonacciDynamic.csproj", "{43456265-ECFA-49B2-91DD-E5002679BB5D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grasshoper", "Grasshoper\Grasshoper.csproj", "{7E758F67-3EDC-472B-A14B-4205AE524486}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -347,6 +349,18 @@ Global
 		{43456265-ECFA-49B2-91DD-E5002679BB5D}.Release|x64.Build.0 = Release|Any CPU
 		{43456265-ECFA-49B2-91DD-E5002679BB5D}.Release|x86.ActiveCfg = Release|Any CPU
 		{43456265-ECFA-49B2-91DD-E5002679BB5D}.Release|x86.Build.0 = Release|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Debug|x64.Build.0 = Debug|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Debug|x86.Build.0 = Debug|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Release|x64.Build.0 = Release|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Release|x86.ActiveCfg = Release|Any CPU
+		{7E758F67-3EDC-472B-A14B-4205AE524486}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
