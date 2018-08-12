@@ -34,6 +34,17 @@ namespace Grasshoper
             lastStick = 5;
             Console.WriteLine($"on the stick {lastStick} the grasshoper can jump in {hopsPossible(lastStick)} different ways");
             Console.WriteLine($"on the stick {lastStick} the grasshoper can super jump in {superHopsPossible(lastStick)} different ways");
+
+
+            lastStick = 5;
+            int hopsRange = 3;
+            Console.WriteLine($"on the stick {lastStick} the grasshoper can super duper jump {hopsRange} in {superDuperHopsPossible(lastStick, hopsRange)} different ways");
+
+            hopsRange = 2;
+            Console.WriteLine($"on the stick {lastStick} the grasshoper can super duper jump {hopsRange} in {superDuperHopsPossible(lastStick, hopsRange)} different ways");
+
+            hopsRange = 4;
+            Console.WriteLine($"on the stick {lastStick} the grasshoper can super duper jump {hopsRange} in {superDuperHopsPossible(lastStick, hopsRange)} different ways");
         }
 
         static int hopsPossible(int lastStick)
@@ -70,7 +81,35 @@ namespace Grasshoper
                 else
                 {
                     fibNums.Add(fibNums[i - 1] + fibNums[i - 2] + fibNums[i - 3]);
+                }
+            }
+
+            return fibNums[lastStick];
         }
+
+
+        static int superDuperHopsPossible(int lastStick, int hopsRange)
+        {
+            List<int> fibNums = new List<int>();
+
+            fibNums.Add(1);
+
+            for (int i = 1; i < lastStick + 1; i++)
+            {
+                int r = hopsRange;
+                if (i < r)
+                {
+                    r = i;
+                }
+
+                int val = 0;
+
+                for (int j = 0; j < r; j++)
+                {
+                    val += fibNums[i - j - 1];
+                }
+
+                fibNums.Add(val);
             }
 
             return fibNums[lastStick];
