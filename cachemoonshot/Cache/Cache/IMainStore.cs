@@ -1,5 +1,4 @@
-﻿// © Evgeny Vinnik
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cache
 {
-    public interface IEvictionAlgorithm
+    public interface IMainStore<in TKey, out TValue>
     {
-        void Evict();
+        TValue Get(TKey fin);
     }
 }

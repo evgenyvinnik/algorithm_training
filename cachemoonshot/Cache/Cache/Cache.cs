@@ -1,4 +1,5 @@
-﻿using System;
+﻿// © Evgeny Vinnik
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,21 +12,23 @@ namespace Cache
         uint N;
         uint size;
         IEvictionAlgorithm evictionAlgorithm;
+        IMainStore<TKey, TValue> mainStore;
 
         //TODO: better default constructor
-        public Cache() : this(4, 128)
+        public Cache(IMainStore<TKey, TValue> mainStore) : this(mainStore, 4, 128)
         {
 
         }
 
-        public Cache(uint N, uint size) : this(N, size, new LruEvictionAlgorithm())
+        public Cache(IMainStore<TKey, TValue> mainStore, uint N, uint size) : this(mainStore, N, size, new LruEvictionAlgorithm())
         {
 
         }
 
-        public Cache(uint N, uint size, IEvictionAlgorithm evictionAlgorithm)
+        public Cache(IMainStore<TKey, TValue> mainStore, uint N, uint size, IEvictionAlgorithm evictionAlgorithm)
         {
             //TODO: add checks
+            this.mainStore = mainStore;
             this.N = N;
             this.size = size;
             this.evictionAlgorithm = evictionAlgorithm;
@@ -38,12 +41,14 @@ namespace Cache
 
         public TValue Get(TKey key)
         {
-            throw new NotImplementedException();
+            return mainStore.Get(key);
         }
 
         public void Delete(TKey key)
         {
 
         }
+
+
     }
 }
