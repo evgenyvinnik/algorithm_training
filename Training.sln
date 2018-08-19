@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinChange", "CoinChange\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DinnerBill", "DinnerBill\DinnerBill.csproj", "{D1DF1FFF-B4BC-48CA-8EA7-F94E8EAD201B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SumStrings", "SumStrings\SumStrings.csproj", "{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -403,6 +405,18 @@ Global
 		{D1DF1FFF-B4BC-48CA-8EA7-F94E8EAD201B}.Release|x64.Build.0 = Release|Any CPU
 		{D1DF1FFF-B4BC-48CA-8EA7-F94E8EAD201B}.Release|x86.ActiveCfg = Release|Any CPU
 		{D1DF1FFF-B4BC-48CA-8EA7-F94E8EAD201B}.Release|x86.Build.0 = Release|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Debug|x64.Build.0 = Debug|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Debug|x86.Build.0 = Debug|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Release|x64.ActiveCfg = Release|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Release|x64.Build.0 = Release|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Release|x86.ActiveCfg = Release|Any CPU
+		{9D332DCC-A8FA-4DA0-AD4D-ACFFB06EFD2E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
