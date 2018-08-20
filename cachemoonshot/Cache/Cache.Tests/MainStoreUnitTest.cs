@@ -16,10 +16,10 @@ namespace Cache.Tests
             mainStore.PutValue(1, 1);
             mainStore.PutValue(1, 2);
 
-            Assert.AreEqual(mainStore.Count(), 1);
+            Assert.AreEqual(1, mainStore.Count());
 
             mainStore.PutValue(2, 1);
-            Assert.AreEqual(mainStore.Count(), 2);
+            Assert.AreEqual(2, mainStore.Count());
         }
 
         [TestMethod]
@@ -30,10 +30,10 @@ namespace Cache.Tests
 
             mainStore.PutValue(1, 2);
 
-            Assert.AreEqual(mainStore.GetValue(1), 2);
+            Assert.AreEqual(2, mainStore.GetValue(1));
 
             mainStore.PutValue(2, 1);
-            Assert.AreNotEqual(mainStore.GetValue(2), 2);
+            Assert.AreNotEqual(2, mainStore.GetValue(2));
 
             var n = mainStore.GetValue(3);
         }
@@ -47,10 +47,10 @@ namespace Cache.Tests
             mainStore.PutValue(1, 2);
             mainStore.PutValue(2, 2);
 
-            Assert.AreEqual(mainStore.DeleteValue(1), true);
-            Assert.AreEqual(mainStore.Count(), 1);
+            Assert.AreEqual(true, mainStore.DeleteValue(1));
+            Assert.AreEqual(1, mainStore.Count());
 
-            Assert.AreEqual(mainStore.DeleteValue(3), false);
+            Assert.AreEqual(false, mainStore.DeleteValue(3));
         }
     }
 }

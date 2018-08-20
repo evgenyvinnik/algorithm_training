@@ -15,32 +15,32 @@ namespace Cache.Tests
 
             n = 2;
             d = 4;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
+            Assert.AreEqual(n % d, CacheUtils.ModTwo(n, d));
 
             n = 3;
             d = 4;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
+            Assert.AreEqual(n % d, CacheUtils.ModTwo(n, d));
 
             n = 3;
             d = 8;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
+            Assert.AreEqual(n % d, CacheUtils.ModTwo(n, d));
 
             n = 0;
             d = 8;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
+            Assert.AreEqual(n % d, CacheUtils.ModTwo(n, d));
 
             n = 8;
             d = 8;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
+            Assert.AreEqual(n % d, CacheUtils.ModTwo(n, d));
         }
 
         [TestMethod]
         public void TestIsPowerTwo()
         {
-            Assert.AreNotEqual(CacheUtils.IsPowerOfTwo(0), true);
-            Assert.AreEqual(CacheUtils.IsPowerOfTwo(2), true);
-            Assert.AreNotEqual(CacheUtils.IsPowerOfTwo(3), true);
-            Assert.AreEqual(CacheUtils.IsPowerOfTwo(4), true);
+            Assert.AreNotEqual(true, CacheUtils.IsPowerOfTwo(0));
+            Assert.AreEqual(true, CacheUtils.IsPowerOfTwo(2));
+            Assert.AreNotEqual(true, CacheUtils.IsPowerOfTwo(3));
+            Assert.AreEqual(true, CacheUtils.IsPowerOfTwo(4));
         }
     }
 }

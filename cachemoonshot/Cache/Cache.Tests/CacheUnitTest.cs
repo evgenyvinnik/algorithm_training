@@ -58,9 +58,9 @@ namespace Cache.Tests
             var mainStore = new MainStore<int, int>();
             var cache = new Cache<int, int>(mainStore);
 
-            Assert.AreEqual(cache.GetCacheSets(), 32);
-            Assert.AreEqual(cache.nWay, (uint)4);
-            Assert.AreEqual(cache.TotalCacheEntries, (uint)128);
+            Assert.AreEqual(32, cache.GetCacheSets());
+            Assert.AreEqual((uint)4, cache.nWay);
+            Assert.AreEqual((uint)128, cache.TotalCacheEntries);
         }
     }
 }

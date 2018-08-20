@@ -35,9 +35,8 @@ namespace Cache
                 {
                     var entries = cacheDictionary.Values.SelectMany(x => x).ToList();
                     evictionAlgorithm.Evict(ref entries);
+                    DeleteInvalidEntries();
                 }
-
-                DeleteInvalidEntries();
 
                 cacheDictionary[key]= new List<Entry<TKey, TValue>> { new Entry<TKey, TValue>(key, value) };
                 EntryCount++;
@@ -96,7 +95,7 @@ namespace Cache
             foreach (var entry in cacheDictionary)
             {
                 var list = entry.Value;
-                for (int i = list.Count - 1; i >= 0; i++)
+                for (int i = list.Count - 1; i >= 0; i--)
                 {
                     if (list[i].ValidityBit == ValidityBit.Valid)
                     {
