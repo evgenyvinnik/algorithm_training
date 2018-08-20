@@ -26,12 +26,12 @@ namespace Cache
 
         public Cache(IMainStore<TKey, TValue> mainStore, uint N, uint size, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
         {
-            if (!IsPowerOfTwo(N) && N < MaxNWays)
+            if (!CacheUtils.IsPowerOfTwo(N) && N < MaxNWays)
             {
                 throw new ArgumentException();
             }
 
-            if (!IsPowerOfTwo(size) && size < int.MaxValue)
+            if (!CacheUtils.IsPowerOfTwo(size) && size < int.MaxValue)
             {
                 throw new ArgumentException();
             }
@@ -42,6 +42,7 @@ namespace Cache
             cacheDictionaries =
                 Enumerable.Repeat(new CacheDictionary<TKey, TValue>(N, evictionAlgorithm), (int)size).ToArray();
         }
+
 
         public void PutValue(TKey key, TValue value)
         {
@@ -73,24 +74,14 @@ namespace Cache
 
         TValue GetMainStoreAndCacheReinsert(TKey key, CacheDictionary<TKey, TValue> dictionary)
         {
-            var value = mainStore.Get(key);
+            var value = mainStore.GetValue(key);
             dictionary.InsertEntry(key, value);
             return value;
         }
 
         CacheDictionary<TKey, TValue> GetDictionary(TKey key)
         {
-            return cacheDictionaries[(int)ModTwo((uint) key.GetHashCode(), size)];
-        }
-
-        static bool IsPowerOfTwo(uint x)
-        {
-            return x != 0 && ModTwo(x, x-1) == 0;
-        }
-
-        static uint ModTwo(uint n, uint d)
-        {
-            return d & (n - 1);
+            return cacheDictionaries[(int)CacheUtils.ModTwo((uint) key.GetHashCode(), size)];
         }
     }
 }
