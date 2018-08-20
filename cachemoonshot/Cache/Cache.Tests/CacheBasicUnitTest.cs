@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// © Evgeny Vinnik
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cache.Tests
 {

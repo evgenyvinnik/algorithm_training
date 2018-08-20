@@ -67,9 +67,9 @@ namespace Cache
             }
         }
 
-        public void DeleteValue(TKey key)
+        public bool DeleteValue(TKey key)
         {
-            GetDictionary(key).Invalidate(key);
+            return GetDictionary(key).Invalidate(key);
         }
 
         TValue GetMainStoreAndCacheReinsert(TKey key, CacheDictionary<TKey, TValue> dictionary)

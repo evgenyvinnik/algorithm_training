@@ -71,15 +71,22 @@ namespace Cache
             }
         }
 
-        public void Invalidate(TKey key)
+        public bool Invalidate(TKey key)
         {
             lock (thisLock)
             {
+                if (!cacheDictionary.ContainsKey(key))
+                {
+                    return false;
+                }
+
                 var list = cacheDictionary[key];
                 foreach (var entry in list)
                 {
                     entry.Invalidate();
                 }
+
+                return true;
             }
         }
 

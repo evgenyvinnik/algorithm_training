@@ -8,19 +8,21 @@ namespace Cache.Tests
     {
         readonly Dictionary<TKey, TValue> values = new Dictionary<TKey, TValue>();
 
-        void PutValue(TKey key, TValue value)
+        public void PutValue(TKey key, TValue value)
         {
             values[key] = value;
         }
 
-        TValue IMainStore<TKey, TValue>.GetValue(TKey key)
+        public TValue GetValue(TKey key)
         {
             return values[key];
         }
 
-        void DeleteValue(TKey key)
+        public bool DeleteValue(TKey key)
         {
-
+            return values.Remove(key);
         }
+
+        public int Count() => values.Count;
     }
 }

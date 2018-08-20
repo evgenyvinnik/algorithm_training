@@ -8,58 +8,10 @@ namespace Cache.Tests
     public class CacheUnitTest
     {
         [TestMethod]
-        public void TestModTwo()
+        public void TestCacheAdd()
         {
-            uint n;
-            uint d;
-
-            n = 2;
-            d = 4;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
-
-            n = 3;
-            d = 4;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
-
-            n = 3;
-            d = 8;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
-
-            n = 0;
-            d = 8;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
-
-            n = 8;
-            d = 8;
-            Assert.AreEqual(CacheUtils.ModTwo(n, d), n % d);
+            var mainStore = new MainStore<int, int>();
+            var cache = new Cache<int,int>(mainStore, 2, 4);
         }
-
-        [TestMethod]
-        public void TestIsPowerTwo()
-        {
-            Assert.AreNotEqual(CacheUtils.IsPowerOfTwo(0), true);
-            Assert.AreEqual(CacheUtils.IsPowerOfTwo(2), true);
-            Assert.AreNotEqual(CacheUtils.IsPowerOfTwo(3), true);
-            Assert.AreEqual(CacheUtils.IsPowerOfTwo(4), true);
-        }
-
-
-        //[TestMethod]
-        //public void TestSmallCacheInt()
-        //{
-
-
-        //    var cache = new Cache<int, int>();
-        //}
-
-
-        //[TestMethod]
-        //public void TestSmallCacheInt()
-        //{
-
-
-        //    var cache = new Cache<int,int>();
-        //}
-
     }
 }
