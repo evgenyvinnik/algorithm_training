@@ -7,20 +7,20 @@ namespace Cache
 {
     class CacheDictionary<TKey, TValue>
     {
+        readonly uint nWay;
         readonly Dictionary<TKey, List<Entry<TKey, TValue>>> cacheDictionary =
             new Dictionary<TKey, List<Entry<TKey, TValue>>>();
-        readonly uint N;
         readonly IEvictionAlgorithm<TKey, TValue> evictionAlgorithm;
+
+        public CacheDictionary(uint nWay, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
+        {
+            this.nWay = nWay;
+            this.evictionAlgorithm = evictionAlgorithm;
+        }
 
         public uint Count { get; private set; }
 
         readonly object thisLock = new object();
-
-        public CacheDictionary(uint N, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
-        {
-            this.N = N;
-            this.evictionAlgorithm = evictionAlgorithm;
-        }
 
         public void InsertEntry(TKey key, TValue value)
         {
@@ -31,7 +31,7 @@ namespace Cache
                     Invalidate(key);
                 }
 
-                if (Count >= N)
+                if (Count >= nWay)
                 {
                     var entries = cacheDictionary.Values.SelectMany(x => x).ToList();
                     evictionAlgorithm.Evict(ref entries);
