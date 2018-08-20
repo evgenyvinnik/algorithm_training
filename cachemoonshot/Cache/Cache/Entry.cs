@@ -1,19 +1,20 @@
 ﻿// © Evgeny Vinnik
+
 using System;
 
 namespace Cache
 {
-    enum ValidityBit
+    public enum ValidityBit
     {
         Invalid,
         Valid
     }
 
-    class Entry<TKey, TValue>
+    public class Entry<TKey, TValue>
     {
         TValue cacheValue;
 
-        public DateTime InsertTime { get; }
+        public TKey Key { get; }
 
         public ValidityBit ValidityBit { get; private set; }
 
@@ -33,8 +34,8 @@ namespace Cache
         public Entry(TKey key, TValue value)
         {
             ValidityBit = ValidityBit.Valid;
+            Key = key;
             Value = value;
-            InsertTime = DateTime.UtcNow;
             AccessTime = DateTime.UtcNow;
         }
 

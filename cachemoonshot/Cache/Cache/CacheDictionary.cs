@@ -1,38 +1,45 @@
 ﻿// © Evgeny Vinnik
 
-using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
+using System.Linq;
 
 namespace Cache
 {
     class CacheDictionary<TKey, TValue>
     {
-        Dictionary<TKey, List<Entry<TKey, TValue>>> cacheDictionary = new Dictionary<TKey, List<Entry<TKey, TValue>>>();
-        int N;
+        readonly Dictionary<TKey, List<Entry<TKey, TValue>>> cacheDictionary =
+            new Dictionary<TKey, List<Entry<TKey, TValue>>>();
+        readonly uint N;
+        readonly IEvictionAlgorithm<TKey, TValue> evictionAlgorithm;
 
-        public int Count { get; private set; }
+        public uint Count { get; private set; }
 
-        Object thisLock = new Object();
+        readonly object thisLock = new object();
 
-
-        public CacheDictionary(int n)
+        public CacheDictionary(uint N, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
         {
-            N = n;
+            this.N = N;
+            this.evictionAlgorithm = evictionAlgorithm;
         }
 
         public void InsertEntry(TKey key, TValue value)
         {
             lock (thisLock)
             {
-                if (Count >= N)
+                if (cacheDictionary.ContainsKey(key))
                 {
-
+                    Invalidate(key);
                 }
 
-                // cacheDictionary.
-                //Bag.Add(new Entry<TKey, TValue>(key, value));
+                if (Count >= N)
+                {
+                    var entries = cacheDictionary.Values.SelectMany(x => x).ToList();
+                    evictionAlgorithm.Evict(ref entries);
+                }
 
+                DeleteInvalidEntries();
+
+                cacheDictionary[key]= new List<Entry<TKey, TValue>> { new Entry<TKey, TValue>(key, value) };
                 Count++;
             }
         }
@@ -51,13 +58,16 @@ namespace Cache
                     }
                 }
 
-                if (list.Count > 0)
+                switch (list.Count)
                 {
-                    throw new MultipleEntriesException();
-
+                    case 0:
+                        return null;
+                    case 1:
+                        return list[0];
+                    default:
+                        Invalidate(key);
+                        throw new MultipleEntriesException();
                 }
-
-                return list[0];
             }
         }
 
@@ -65,13 +75,41 @@ namespace Cache
         {
             lock (thisLock)
             {
-               // List<int> 
+                var list = cacheDictionary[key];
+                foreach (var entry in list)
+                {
+                    entry.Invalidate();
+                }
+            }
+        }
+
+        void DeleteInvalidEntries()
+        {
+            var keysToRemove = new List<TKey>();
+            foreach (var entry in cacheDictionary)
+            {
+                var list = entry.Value;
+                for (int i = list.Count - 1; i >= 0; i++)
+                {
+                    if (list[i].ValidityBit == ValidityBit.Valid)
+                    {
+                        continue;
+                    }
+
+                    list.RemoveAt(i);
+                    Count--;
+                }
+
+                if (list.Count == 0)
+                {
+                    keysToRemove.Add(entry.Key);
+                }
             }
 
-            /*foreach (var entry in cacheDictionary[key])
+            foreach (var key in keysToRemove)
             {
-                entry.ValidityBit = ValidityBit.Invalid;
-            }*/
+                cacheDictionary.Remove(key);
+            }
         }
     }
 }

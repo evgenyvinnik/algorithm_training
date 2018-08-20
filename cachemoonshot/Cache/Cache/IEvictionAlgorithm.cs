@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Cache
 {
-    public interface IEvictionAlgorithm
+    public interface IEvictionAlgorithm<TKey, TValue>
     {
-        void Evict();
+        void Evict(ref List<Entry<TKey, TValue>> entries);
     }
 }
