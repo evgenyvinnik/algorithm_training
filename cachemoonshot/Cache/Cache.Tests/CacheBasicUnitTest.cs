@@ -42,24 +42,5 @@ namespace Cache.Tests
             Assert.AreNotEqual(CacheUtils.IsPowerOfTwo(3), true);
             Assert.AreEqual(CacheUtils.IsPowerOfTwo(4), true);
         }
-
-
-        //[TestMethod]
-        //public void TestSmallCacheInt()
-        //{
-
-
-        //    var cache = new Cache<int, int>();
-        //}
-
-
-        //[TestMethod]
-        //public void TestSmallCacheInt()
-        //{
-
-
-        //    var cache = new Cache<int,int>();
-        //}
-
     }
 }

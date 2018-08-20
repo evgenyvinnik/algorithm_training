@@ -12,6 +12,8 @@ namespace Cache.Tests
         {
             var mainStore = new MainStore<int, int>();
             var cache = new Cache<int,int>(mainStore, 2, 4);
+
+            //Assert.ThrowsException<>()
         }
     }
 }
