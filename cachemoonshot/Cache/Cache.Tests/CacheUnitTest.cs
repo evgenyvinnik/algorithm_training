@@ -1,5 +1,6 @@
 ﻿// © Evgeny Vinnik
 
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cache.Tests
@@ -8,12 +9,58 @@ namespace Cache.Tests
     public class CacheUnitTest
     {
         [TestMethod]
-        public void TestCacheAdd()
+        public void TestCacheCheckExceptions()
         {
             var mainStore = new MainStore<int, int>();
-            var cache = new Cache<int,int>(mainStore, 2, 4);
+            uint nWay;
+            uint cacheEntries;
 
-            //Assert.ThrowsException<>()
+            var ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(null));
+            StringAssert.Contains(ex.Message, "Main data store should isn't specified!");
+
+            nWay = 6;
+            cacheEntries = 128;
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            StringAssert.Contains(ex.Message, "nWay ways should be a power of two!");
+
+            nWay = 256;
+            cacheEntries = 128;
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            StringAssert.Contains(ex.Message, $"nWay ways should be less or equal {Cache<int, int>.MaxNWays}");
+
+            nWay = 4;
+            cacheEntries = 129;
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            StringAssert.Contains(ex.Message, "Number of total cache entries should be a power of two!");
+
+            nWay = 4;
+            cacheEntries = 0xFFFFFFFF;
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            StringAssert.Contains(ex.Message,
+                $"Number of total cache entries should be less or equal than {Cache<int, int>.MaxCacheEntries}");
+
+            nWay = 4;
+            cacheEntries = 128;
+            ex = Assert.ThrowsException<ArgumentException>(() =>
+                new Cache<int, int>(mainStore, nWay, cacheEntries, null));
+            StringAssert.Contains(ex.Message, "Eviction algorithm isn't specified!");
+
+            nWay = 8;
+            cacheEntries = 4;
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            StringAssert.Contains(ex.Message,
+                $"Number of total cache entries {cacheEntries} should more or equal than {nWay}");
+        }
+
+        [TestMethod]
+        public void TestCacheTestCacheDictionariesNumber()
+        {
+            var mainStore = new MainStore<int, int>();
+            var cache = new Cache<int, int>(mainStore);
+
+            Assert.AreEqual(cache.GetCacheSets(), 32);
+            Assert.AreEqual(cache.nWay, (uint)4);
+            Assert.AreEqual(cache.TotalCacheEntries, (uint)128);
         }
     }
 }

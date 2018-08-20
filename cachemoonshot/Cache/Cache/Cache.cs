@@ -10,11 +10,9 @@ namespace Cache
         public const uint MaxNWays = 128;
         public const uint MaxCacheEntries = 0x7FFFFFFF;
 
-        readonly uint totalCacheEntries;
         readonly IMainStore<TKey, TValue> mainStore;
         readonly CacheDictionary<TKey, TValue>[] cacheDictionaries;
 
-        //TODO: better default constructor
         public Cache(IMainStore<TKey, TValue> mainStore) : this(mainStore, 4, 128)
         {
 
@@ -32,14 +30,19 @@ namespace Cache
             uint totalCacheEntries,
             IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
         {
+            if (nWay > MaxNWays)
+            {
+                throw new ArgumentException($"nWay ways should be less or equal {MaxNWays}");
+            }
+
             if (!CacheUtils.IsPowerOfTwo(nWay))
             {
                 throw new ArgumentException("nWay ways should be a power of two!");
             }
 
-            if (nWay <= MaxNWays)
+            if (totalCacheEntries > MaxCacheEntries)
             {
-                throw new ArgumentException($"nWay ways should be less or equal {MaxNWays}");
+                throw new ArgumentException($"Number of total cache entries should be less or equal than {MaxCacheEntries}");
             }
 
             if (!CacheUtils.IsPowerOfTwo(totalCacheEntries))
@@ -47,9 +50,9 @@ namespace Cache
                 throw new ArgumentException("Number of total cache entries should be a power of two!");
             }
 
-            if (totalCacheEntries < MaxCacheEntries)
+            if (totalCacheEntries <= nWay)
             {
-                throw new ArgumentException($"Number of total cache entries should be less than {MaxCacheEntries}");
+                throw new ArgumentException($"Number of total cache entries {totalCacheEntries} should more or equal than {nWay}");
             }
 
             if (evictionAlgorithm == null)
@@ -59,12 +62,19 @@ namespace Cache
 
             this.mainStore = mainStore ?? throw new ArgumentException("Main data store should isn't specified!");
 
-            this.totalCacheEntries = totalCacheEntries;
+            this.nWay = nWay;
+            TotalCacheEntries = totalCacheEntries;
             cacheDictionaries =
                 Enumerable.Repeat(
                     new CacheDictionary<TKey, TValue>(nWay, evictionAlgorithm),
-                    (int)totalCacheEntries).ToArray();
+                    (int)(totalCacheEntries / nWay)).ToArray();
         }
+
+        public uint nWay { get; }
+
+        public uint TotalCacheEntries { get; }
+
+        public int GetCacheSets() => cacheDictionaries.Length;
 
         public void PutValue(TKey key, TValue value)
         {
@@ -103,7 +113,7 @@ namespace Cache
 
         CacheDictionary<TKey, TValue> GetDictionary(TKey key)
         {
-            return cacheDictionaries[(int)CacheUtils.ModTwo((uint) key.GetHashCode(), totalCacheEntries)];
+            return cacheDictionaries[(int)CacheUtils.ModTwo((uint) key.GetHashCode(), TotalCacheEntries)];
         }
     }
 }

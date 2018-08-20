@@ -2,14 +2,14 @@
 
 namespace Cache
 {
-    static class CacheUtils
+    internal static class CacheUtils
     {
-        public static bool IsPowerOfTwo(uint x)
+        internal static bool IsPowerOfTwo(uint x)
         {
-            return x != 0 && ModTwo(x, x - 1) == 0;
+            return x != (uint)0 && ModTwo(x, x - 1) == 0;
         }
 
-        public static uint ModTwo(uint n, uint d)
+        internal static uint ModTwo(uint n, uint d)
         {
             return n & (d - 1);
         }

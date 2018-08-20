@@ -5,24 +5,24 @@ using System.Linq;
 
 namespace Cache
 {
-    class CacheDictionary<TKey, TValue>
+    internal class CacheDictionary<TKey, TValue>
     {
         readonly uint nWay;
         readonly Dictionary<TKey, List<Entry<TKey, TValue>>> cacheDictionary =
             new Dictionary<TKey, List<Entry<TKey, TValue>>>();
         readonly IEvictionAlgorithm<TKey, TValue> evictionAlgorithm;
 
-        public CacheDictionary(uint nWay, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
+        internal CacheDictionary(uint nWay, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
         {
             this.nWay = nWay;
             this.evictionAlgorithm = evictionAlgorithm;
         }
 
-        public uint Count { get; private set; }
+        internal uint EntryCount { get; private set; }
 
         readonly object thisLock = new object();
 
-        public void InsertEntry(TKey key, TValue value)
+        internal void InsertEntry(TKey key, TValue value)
         {
             lock (thisLock)
             {
@@ -31,7 +31,7 @@ namespace Cache
                     Invalidate(key);
                 }
 
-                if (Count >= nWay)
+                if (EntryCount >= nWay)
                 {
                     var entries = cacheDictionary.Values.SelectMany(x => x).ToList();
                     evictionAlgorithm.Evict(ref entries);
@@ -40,11 +40,11 @@ namespace Cache
                 DeleteInvalidEntries();
 
                 cacheDictionary[key]= new List<Entry<TKey, TValue>> { new Entry<TKey, TValue>(key, value) };
-                Count++;
+                EntryCount++;
             }
         }
 
-        public Entry<TKey, TValue> FindEntry(TKey key)
+        internal Entry<TKey, TValue> FindEntry(TKey key)
         {
             lock (thisLock)
             {
@@ -71,7 +71,7 @@ namespace Cache
             }
         }
 
-        public bool Invalidate(TKey key)
+        internal bool Invalidate(TKey key)
         {
             lock (thisLock)
             {
@@ -104,7 +104,7 @@ namespace Cache
                     }
 
                     list.RemoveAt(i);
-                    Count--;
+                    EntryCount--;
                 }
 
                 if (list.Count == 0)

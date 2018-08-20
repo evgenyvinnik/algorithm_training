@@ -14,14 +14,21 @@ namespace Cache
     {
         TValue cacheValue;
 
+        public Entry(TKey key, TValue value)
+        {
+            ValidityBit = ValidityBit.Valid;
+            Key = key;
+            Value = value;
+            AccessTime = DateTime.UtcNow;
+        }
+
         public TKey Key { get; }
 
         public ValidityBit ValidityBit { get; private set; }
 
         public DateTime AccessTime { get; private set; }
 
-
-        public TValue Value
+        internal TValue Value
         {
             get
             {
@@ -29,14 +36,6 @@ namespace Cache
                 return cacheValue;
             }
             private set => cacheValue = value;
-        }
-
-        public Entry(TKey key, TValue value)
-        {
-            ValidityBit = ValidityBit.Valid;
-            Key = key;
-            Value = value;
-            AccessTime = DateTime.UtcNow;
         }
 
         public void Invalidate()
