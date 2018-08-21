@@ -5,12 +5,20 @@ using System.Linq;
 
 namespace Cache
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     internal class CacheDictionary<TKey, TValue>
     {
         readonly uint nWay;
         readonly Dictionary<TKey, List<Entry<TKey, TValue>>> cacheDictionary =
             new Dictionary<TKey, List<Entry<TKey, TValue>>>();
+
         readonly IEvictionAlgorithm<TKey, TValue> evictionAlgorithm;
+
+        readonly object thisLock = new object();
 
         internal CacheDictionary(uint nWay, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
         {
@@ -19,8 +27,6 @@ namespace Cache
         }
 
         internal uint EntryCount { get; private set; }
-
-        readonly object thisLock = new object();
 
         internal void InsertEntry(TKey key, TValue value)
         {
@@ -38,7 +44,10 @@ namespace Cache
                     DeleteInvalidEntries();
                 }
 
-                cacheDictionary[key]= new List<Entry<TKey, TValue>> { new Entry<TKey, TValue>(key, value) };
+                cacheDictionary[key] = new List<Entry<TKey, TValue>>
+                {
+                    new Entry<TKey, TValue>(key, value)
+                };
                 EntryCount++;
             }
         }

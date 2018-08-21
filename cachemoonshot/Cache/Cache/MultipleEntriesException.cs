@@ -4,6 +4,9 @@ using System;
 
 namespace Cache
 {
+    /// <summary>
+    /// 
+    /// </summary>
     internal class MultipleEntriesException : Exception
     {
         public MultipleEntriesException()

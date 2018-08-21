@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 namespace Cache
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     public class LruEvictionAlgorithm<TKey, TValue> : IEvictionAlgorithm<TKey, TValue>
     {
         public void Evict(ref List<Entry<TKey, TValue>> entries)

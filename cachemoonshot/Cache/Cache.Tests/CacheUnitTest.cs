@@ -1,6 +1,7 @@
 ﻿// © Evgeny Vinnik
 
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cache.Tests
@@ -58,7 +59,7 @@ namespace Cache.Tests
             var mainStore = new MainStore<int, int>();
             var cache = new Cache<int, int>(mainStore);
 
-            Assert.AreEqual((uint)4, cache.nWay);
+            Assert.AreEqual((uint)4, cache.NWay);
             Assert.AreEqual((uint)128, cache.TotalCacheEntries);
             Assert.AreEqual((uint)32, cache.CacheSets);
         }
@@ -125,6 +126,10 @@ namespace Cache.Tests
 
             invalidateResult = cache.DeleteValue(2);
             Assert.AreEqual(true, invalidateResult);
+
+            var ex = Assert.ThrowsException<KeyNotFoundException>(() => new Cache<int, int>(null));
+            StringAssert.Contains(ex.Message, "Main data store should isn't specified!");
+
         }
     }
 }

@@ -43,7 +43,9 @@
     <Compile Include="LruEvictionAlgorithm.cs" />
     <Compile Include="MruEvictionAlgorithm.cs" />
     <Compile Include="MultipleEntriesException.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,6 +4,11 @@ using System;
 
 namespace Cache
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     public class Cache<TKey, TValue>
     {
         public const uint MaxNWays = 128;
@@ -14,15 +19,20 @@ namespace Cache
 
         public Cache(IMainStore<TKey, TValue> mainStore) : this(mainStore, 4, 128)
         {
-
         }
 
         public Cache(IMainStore<TKey, TValue> mainStore, uint nWay, uint totalCacheEntries) :
             this(mainStore, nWay, totalCacheEntries, new LruEvictionAlgorithm<TKey, TValue>())
         {
-
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mainStore"></param>
+        /// <param name="nWay"></param>
+        /// <param name="totalCacheEntries"></param>
+        /// <param name="evictionAlgorithm"></param>
         public Cache(
             IMainStore<TKey, TValue> mainStore,
             uint nWay,
@@ -31,12 +41,12 @@ namespace Cache
         {
             if (nWay > MaxNWays)
             {
-                throw new ArgumentException($"nWay ways should be less or equal {MaxNWays}");
+                throw new ArgumentException($"N-Way should be less or equal {MaxNWays}");
             }
 
             if (!CacheUtils.IsPowerOfTwo(nWay))
             {
-                throw new ArgumentException("nWay ways should be a power of two!");
+                throw new ArgumentException("N-Way should be a power of two!");
             }
 
             if (totalCacheEntries > MaxCacheEntries)
@@ -51,7 +61,7 @@ namespace Cache
 
             if (totalCacheEntries <= nWay)
             {
-                throw new ArgumentException($"Number of total cache entries {totalCacheEntries} should more or equal than {nWay}");
+                throw new ArgumentException($"Number of total cache entries {totalCacheEntries} should more or equal than {nWay} ways");
             }
 
             if (evictionAlgorithm == null)
@@ -61,7 +71,7 @@ namespace Cache
 
             this.mainStore = mainStore ?? throw new ArgumentException("Main data store should isn't specified!");
 
-            this.nWay = nWay;
+            this.NWay = nWay;
             TotalCacheEntries = totalCacheEntries;
             CacheSets = totalCacheEntries / nWay;
 
@@ -72,17 +82,36 @@ namespace Cache
             }
         }
 
-        public uint nWay { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public uint NWay { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public uint TotalCacheEntries { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public uint CacheSets { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void PutValue(TKey key, TValue value)
         {
             GetDictionary(key).InsertEntry(key, value);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public TValue GetValue(TKey key)
         {
             var dictionary = GetDictionary(key);
@@ -104,11 +133,22 @@ namespace Cache
             return GetMainStoreAndCacheReinsert(key, dictionary);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public bool DeleteValue(TKey key)
         {
             return GetDictionary(key).Invalidate(key);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="dictionary"></param>
+        /// <returns></returns>
         TValue GetMainStoreAndCacheReinsert(TKey key, CacheDictionary<TKey, TValue> dictionary)
         {
             var value = mainStore.GetValue(key);
@@ -116,9 +156,14 @@ namespace Cache
             return value;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         CacheDictionary<TKey, TValue> GetDictionary(TKey key)
         {
-            return cacheDictionaries[(int)CacheUtils.ModTwo((uint) key.GetHashCode(), CacheSets)];
+            return cacheDictionaries[(int)CacheUtils.ModTwo((uint)key.GetHashCode(), CacheSets)];
         }
     }
 }
