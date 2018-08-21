@@ -17,17 +17,17 @@ namespace Cache.Tests
             uint cacheEntries;
 
             var ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(null));
-            StringAssert.Contains(ex.Message, "Main data store should isn't specified!");
+            StringAssert.Contains(ex.Message, "Main data store isn't specified!");
 
             nWay = 6;
             cacheEntries = 128;
             ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
-            StringAssert.Contains(ex.Message, "nWay ways should be a power of two!");
+            StringAssert.Contains(ex.Message, "N-Way should be a power of two!");
 
             nWay = 256;
             cacheEntries = 128;
             ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
-            StringAssert.Contains(ex.Message, $"nWay ways should be less or equal {Cache<int, int>.MaxNWays}");
+            StringAssert.Contains(ex.Message, $"N-Way should be less or equal {Cache<int, int>.MaxNWays}");
 
             nWay = 4;
             cacheEntries = 129;
@@ -50,7 +50,7 @@ namespace Cache.Tests
             cacheEntries = 4;
             ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
             StringAssert.Contains(ex.Message,
-                $"Number of total cache entries {cacheEntries} should more or equal than {nWay}");
+                $"Number of total cache entries {cacheEntries} should more or equal than {nWay} ways");
         }
 
         [TestMethod]
@@ -127,9 +127,9 @@ namespace Cache.Tests
             invalidateResult = cache.DeleteValue(2);
             Assert.AreEqual(true, invalidateResult);
 
-            var ex = Assert.ThrowsException<KeyNotFoundException>(() => new Cache<int, int>(null));
-            StringAssert.Contains(ex.Message, "Main data store should isn't specified!");
-
+            //check exception on search value that is not present
+            var ex = Assert.ThrowsException<KeyNotFoundException>(() =>cache.GetValue(13));
+            StringAssert.Contains(ex.Message, "The given key was not present in the dictionary");
         }
     }
 }

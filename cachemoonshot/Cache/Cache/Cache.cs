@@ -17,10 +17,20 @@ namespace Cache
         readonly IMainStore<TKey, TValue> mainStore;
         readonly CacheDictionary<TKey, TValue>[] cacheDictionaries;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mainStore"></param>
         public Cache(IMainStore<TKey, TValue> mainStore) : this(mainStore, 4, 128)
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mainStore"></param>
+        /// <param name="nWay"></param>
+        /// <param name="totalCacheEntries"></param>
         public Cache(IMainStore<TKey, TValue> mainStore, uint nWay, uint totalCacheEntries) :
             this(mainStore, nWay, totalCacheEntries, new LruEvictionAlgorithm<TKey, TValue>())
         {
@@ -69,9 +79,9 @@ namespace Cache
                 throw new ArgumentException("Eviction algorithm isn't specified!");
             }
 
-            this.mainStore = mainStore ?? throw new ArgumentException("Main data store should isn't specified!");
+            this.mainStore = mainStore ?? throw new ArgumentException("Main data store isn't specified!");
 
-            this.NWay = nWay;
+            NWay = nWay;
             TotalCacheEntries = totalCacheEntries;
             CacheSets = totalCacheEntries / nWay;
 
