@@ -39,7 +39,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LruSortEvictionAlgorithm.cs" />
-    <Compile Include="MruEvictionAlgorithm.cs" />
     <Compile Include="MruSortEvictionAlgorithm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
