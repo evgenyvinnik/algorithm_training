@@ -1,7 +1,6 @@
 ﻿// © Evgeny Vinnik
 
 using System.Collections.Generic;
-using Cache;
 
 namespace Cache
 {

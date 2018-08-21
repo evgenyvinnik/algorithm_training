@@ -1,7 +1,6 @@
 ﻿// © Evgeny Vinnik
 
 using System;
-using System.Linq;
 
 namespace Cache
 {
@@ -64,17 +63,20 @@ namespace Cache
 
             this.nWay = nWay;
             TotalCacheEntries = totalCacheEntries;
-            cacheDictionaries =
-                Enumerable.Repeat(
-                    new CacheDictionary<TKey, TValue>(nWay, evictionAlgorithm),
-                    (int)(totalCacheEntries / nWay)).ToArray();
+            CacheSets = totalCacheEntries / nWay;
+
+            cacheDictionaries = new CacheDictionary<TKey, TValue>[CacheSets];
+            for (int i = 0; i < CacheSets; i++)
+            {
+                cacheDictionaries[i] = new CacheDictionary<TKey, TValue>(nWay, evictionAlgorithm);
+            }
         }
 
         public uint nWay { get; }
 
         public uint TotalCacheEntries { get; }
 
-        public int GetCacheSets() => cacheDictionaries.Length;
+        public uint CacheSets { get; }
 
         public void PutValue(TKey key, TValue value)
         {
@@ -89,14 +91,17 @@ namespace Cache
             {
                 var entry = dictionary.FindEntry(key);
 
-                return entry != null ? entry.Value : GetMainStoreAndCacheReinsert(key, dictionary);
+                if (entry != null)
+                {
+                    return entry.Value;
+                }
             }
             catch (MultipleEntriesException e)
             {
                 Console.WriteLine(e);
-
-                return GetMainStoreAndCacheReinsert(key, dictionary);
             }
+
+            return GetMainStoreAndCacheReinsert(key, dictionary);
         }
 
         public bool DeleteValue(TKey key)
@@ -113,7 +118,7 @@ namespace Cache
 
         CacheDictionary<TKey, TValue> GetDictionary(TKey key)
         {
-            return cacheDictionaries[(int)CacheUtils.ModTwo((uint) key.GetHashCode(), TotalCacheEntries)];
+            return cacheDictionaries[(int)CacheUtils.ModTwo((uint) key.GetHashCode(), CacheSets)];
         }
     }
 }

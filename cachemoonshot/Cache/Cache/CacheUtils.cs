@@ -6,7 +6,7 @@ namespace Cache
     {
         internal static bool IsPowerOfTwo(uint x)
         {
-            return x != (uint)0 && ModTwo(x, x - 1) == 0;
+            return x != 0 && ModTwo(x, x - 1) == 0;
         }
 
         internal static uint ModTwo(uint n, uint d)
