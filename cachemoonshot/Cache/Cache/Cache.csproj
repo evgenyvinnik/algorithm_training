@@ -41,6 +41,7 @@
     <Compile Include="Entry.cs" />
     <Compile Include="IEvictionAlgorithm.cs" />
     <Compile Include="LruEvictionAlgorithm.cs" />
+    <Compile Include="MruEvictionAlgorithm.cs" />
     <Compile Include="MultipleEntriesException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

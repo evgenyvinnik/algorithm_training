@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using Cache;
 
-namespace CacheUser
+namespace Cache
 {
     class MruEvictionAlgorithm<TKey, TValue> : IEvictionAlgorithm<TKey, TValue>
     {
@@ -12,7 +12,7 @@ namespace CacheUser
             var evictEntry = entries[0];
             for (int i = 1; i < entries.Count; i++)
             {
-                if (evictEntry.ValidityBit == ValidityBit.Invalid)
+                if (entries[i].ValidityBit == ValidityBit.Invalid)
                 {
                     evictEntry = entries[i];
                     break;

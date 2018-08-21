@@ -11,7 +11,7 @@ namespace Cache
             var evictEntry = entries[0];
             for (int i = 1; i < entries.Count; i++)
             {
-                if (evictEntry.ValidityBit == ValidityBit.Invalid)
+                if (entries[i].ValidityBit == ValidityBit.Invalid)
                 {
                     evictEntry = entries[i];
                     break;

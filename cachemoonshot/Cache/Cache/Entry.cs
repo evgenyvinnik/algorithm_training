@@ -13,10 +13,11 @@ namespace Cache
     public class Entry<TKey, TValue>
     {
         TValue cacheValue;
+        volatile ValidityBit validityBit;
 
         public Entry(TKey key, TValue value)
         {
-            ValidityBit = ValidityBit.Valid;
+            validityBit = ValidityBit.Valid;
             Key = key;
             Value = value;
             AccessTime = DateTime.UtcNow;
@@ -24,7 +25,10 @@ namespace Cache
 
         public TKey Key { get; }
 
-        public ValidityBit ValidityBit { get; private set; }
+        public ValidityBit ValidityBit
+        {
+            get => validityBit;
+        }
 
         public DateTime AccessTime { get; private set; }
 
@@ -40,7 +44,7 @@ namespace Cache
 
         public void Invalidate()
         {
-            ValidityBit = ValidityBit.Invalid;
+            validityBit = ValidityBit.Invalid;
         }
     }
 }

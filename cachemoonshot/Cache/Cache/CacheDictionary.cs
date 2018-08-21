@@ -47,6 +47,11 @@ namespace Cache
         {
             lock (thisLock)
             {
+                if (!cacheDictionary.ContainsKey(key))
+                {
+                    return null;
+                }
+
                 var list = new List<Entry<TKey, TValue>>();
 
                 foreach (var entry in cacheDictionary[key])
