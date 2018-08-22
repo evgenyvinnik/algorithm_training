@@ -16,39 +16,35 @@ namespace Cache.Tests
             uint nWay;
             uint cacheEntries;
 
-            var ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(null));
-            StringAssert.Contains(ex.Message, "Main data store isn't specified!");
-
             nWay = 6;
             cacheEntries = 128;
-            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            var ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(nWay, cacheEntries));
             StringAssert.Contains(ex.Message, "N-Way should be a power of two!");
 
             nWay = 256;
             cacheEntries = 128;
-            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(nWay, cacheEntries));
             StringAssert.Contains(ex.Message, $"N-Way should be less or equal {Cache<int, int>.MaxNWays}");
 
             nWay = 4;
             cacheEntries = 129;
-            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(nWay, cacheEntries));
             StringAssert.Contains(ex.Message, "Number of total cache entries should be a power of two!");
 
             nWay = 4;
             cacheEntries = 0xFFFFFFFF;
-            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(nWay, cacheEntries));
             StringAssert.Contains(ex.Message,
                 $"Number of total cache entries should be less or equal than {Cache<int, int>.MaxCacheEntries}");
 
             nWay = 4;
             cacheEntries = 128;
-            ex = Assert.ThrowsException<ArgumentException>(() =>
-                new Cache<int, int>(mainStore, nWay, cacheEntries, null));
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(nWay, cacheEntries, null));
             StringAssert.Contains(ex.Message, "Eviction algorithm isn't specified!");
 
             nWay = 8;
             cacheEntries = 4;
-            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(mainStore, nWay, cacheEntries));
+            ex = Assert.ThrowsException<ArgumentException>(() => new Cache<int, int>(nWay, cacheEntries));
             StringAssert.Contains(ex.Message,
                 $"Number of total cache entries {cacheEntries} should more or equal than {nWay} ways");
         }
@@ -56,8 +52,7 @@ namespace Cache.Tests
         [TestMethod]
         public void TestCacheTestCacheDictionariesNumber()
         {
-            var mainStore = new MainStore<int, int>();
-            var cache = new Cache<int, int>(mainStore);
+            var cache = new Cache<int, int>();
 
             Assert.AreEqual((uint)4, cache.NWay);
             Assert.AreEqual((uint)128, cache.TotalCacheEntries);
@@ -70,7 +65,7 @@ namespace Cache.Tests
             var mainStore = new MainStore<int, int>();
             uint nWay = 4;
             uint cacheEntries = 8;
-            var cache = new Cache<int, int>(mainStore, nWay, cacheEntries);
+            var cache = new Cache<int, int>(nWay, cacheEntries);
 
             Assert.AreEqual((uint) 2, cache.CacheSets);
 
@@ -99,27 +94,29 @@ namespace Cache.Tests
             int value;
 
             // all good
-            value = cache.GetValue(1);
+            value = cache.TryGetValue(1);
             Assert.AreEqual(1, value);
-            value = cache.GetValue(2);
+            value = cache.TryGetValue(2);
             Assert.AreEqual(2, value);
-            value = cache.GetValue(3);
+            value = cache.TryGetValue(3);
             Assert.AreEqual(3, value);
-            value = cache.GetValue(4);
+            value = cache.TryGetValue(4);
             Assert.AreEqual(4, value);
-            value = cache.GetValue(5);
+            value = cache.TryGetValue(5);
             Assert.AreEqual(5, value);
-            value = cache.GetValue(6);
+            value = cache.TryGetValue(6);
             Assert.AreEqual(6, value);
-            value = cache.GetValue(7);
+            value = cache.TryGetValue(7);
             Assert.AreEqual(7, value);
-            value = cache.GetValue(8);
+            value = cache.TryGetValue(8);
             Assert.AreEqual(8, value);
 
             // not in the cache
-            value = cache.GetValue(9);
-            Assert.AreEqual(9, value);
+            var ex = Assert.ThrowsException<CacheMissException>(() => cache.TryGetValue(9));
+            StringAssert.Contains(ex.Message,
+                $"Value with key {9} isn't cached.");
 
+            cache.PutValue(9, 9);
             //check that 1 got evicted
             var invalidateResult = cache.DeleteValue(1);
             Assert.AreEqual(false, invalidateResult);
@@ -128,8 +125,8 @@ namespace Cache.Tests
             Assert.AreEqual(true, invalidateResult);
 
             //check exception on search value that is not present
-            var ex = Assert.ThrowsException<KeyNotFoundException>(() =>cache.GetValue(13));
-            StringAssert.Contains(ex.Message, "The given key was not present in the dictionary");
+            ex = Assert.ThrowsException<CacheMissException>(() =>cache.TryGetValue(13));
+            StringAssert.Contains(ex.Message, $"Value with key {13} isn't cached.");
         }
     }
 }

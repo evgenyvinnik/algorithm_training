@@ -7,7 +7,7 @@ using System.Linq;
 namespace Cache
 {
     /// <summary>
-    /// 
+    /// Class the represents cache set.
     /// </summary>
     /// <typeparam name="TKey">Cache entry key.</typeparam>
     /// <typeparam name="TValue">Cache entry value.</typeparam>
@@ -100,6 +100,13 @@ namespace Cache
             }
         }
 
+        /// <summary>
+        /// Invalidates <see cref="Entry{TKey,Tvalue}"/> by provided key.
+        /// </summary>
+        /// <param name="key">Cache entry key to invalidate.</param>
+        /// <param name="source">Value indicating the source of invalidation request.</param>
+        /// <returns>Returns true if cache entry invalidation is successful,
+        /// false if key is missing in cache set.</returns>
         internal bool Invalidate(TKey key, InvalidationSource source)
         {
             lock (thisLock)
@@ -119,6 +126,9 @@ namespace Cache
             }
         }
 
+        /// <summary>
+        /// Deletes all <see cref="Entry{TKey,Tvalue}"/> that were marked as invalid.
+        /// </summary>
         void DeleteInvalidEntries()
         {
             var keysToRemove = new List<TKey>();

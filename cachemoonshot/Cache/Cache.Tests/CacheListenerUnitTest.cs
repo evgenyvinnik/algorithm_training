@@ -10,12 +10,12 @@ namespace Cache.Tests
     public class CacheListenerUnitTest
     {
         [TestMethod]
-        public void TestCachePutValue()
+        public void TestCacheListenerTesting()
         {
             var mainStore = new MainStore<int, int>();
             uint nWay = 2;
             uint cacheEntries = 4;
-            var cache = new Cache<int, int>(mainStore, nWay, cacheEntries);
+            var cache = new Cache<int, int>(nWay, cacheEntries);
 
             List<EventArgs> missEvents = new List<EventArgs>();
 
@@ -44,11 +44,11 @@ namespace Cache.Tests
             cache.PutValue(4, 4);
 
             // not in the cache
-            int value;
-            value = cache.GetValue(5);
-            Assert.AreEqual(5, value);
+            //int value;
+            var ex = Assert.ThrowsException<CacheMissException>(() => cache.TryGetValue(5));
 
             Assert.AreEqual(1, missEvents.Count);
+            cache.PutValue(5, 5);
             Assert.AreEqual(InvalidationSource.Eviction, invalidationEvents[0]);
 
             cache.DeleteValue(3);
