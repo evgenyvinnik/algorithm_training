@@ -9,8 +9,8 @@ namespace Cache
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TKey">Cache entry key.</typeparam>
+    /// <typeparam name="TValue">Cache entry value.</typeparam>
     internal class CacheDictionary<TKey, TValue>
     {
         readonly uint nWay;
@@ -21,13 +21,13 @@ namespace Cache
 
         readonly object thisLock = new object();
 
-        public event EventHandler<InvalidationEventArgs> EvictionListener;
-
         internal CacheDictionary(uint nWay, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
         {
             this.nWay = nWay;
             this.evictionAlgorithm = evictionAlgorithm;
         }
+
+        internal event EventHandler<InvalidationEventArgs> EvictionListener;
 
         internal uint EntryCount { get; private set; }
 
@@ -56,7 +56,12 @@ namespace Cache
                 }
                 else
                 {
-                    cacheDictionary.Add(key, new List<Entry<TKey, TValue>>{ entry });
+                    cacheDictionary.Add(
+                        key,
+                        new List<Entry<TKey, TValue>>
+                        {
+                            entry
+                        });
                 }
 
                 EntryCount++;
@@ -90,7 +95,7 @@ namespace Cache
                         return list[0];
                     default:
                         Invalidate(key, InvalidationSource.Replacement);
-                        throw new MultipleEntriesException();
+                        return null;
                 }
             }
         }

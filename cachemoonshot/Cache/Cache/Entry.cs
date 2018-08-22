@@ -7,8 +7,8 @@ namespace Cache
     /// <summary>
     /// 
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TKey">Cache entry key.</typeparam>
+    /// <typeparam name="TValue">Cache entry value.</typeparam>
     public class Entry<TKey, TValue>
     {
         /// <summary>
@@ -20,8 +20,6 @@ namespace Cache
         /// 
         /// </summary>
         volatile ValidityBit validityBit;
-
-        public event EventHandler<InvalidationEventArgs> InvalidationListener;
 
         /// <summary>
         /// 
@@ -35,6 +33,8 @@ namespace Cache
             Value = value;
             AccessTime = DateTime.UtcNow;
         }
+
+        internal event EventHandler<InvalidationEventArgs> InvalidationListener;
 
         /// <summary>
         /// 
@@ -68,7 +68,6 @@ namespace Cache
             private set => cacheValue = value;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -76,7 +75,12 @@ namespace Cache
         public void Invalidate(InvalidationSource source)
         {
             validityBit = ValidityBit.Invalid;
-            InvalidationListener?.Invoke(this, new InvalidationEventArgs { Source=source });
+            InvalidationListener?.Invoke(
+                this,
+                new InvalidationEventArgs
+                {
+                    Source = source
+                });
         }
     }
 }
