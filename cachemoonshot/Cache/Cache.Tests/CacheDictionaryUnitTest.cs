@@ -88,7 +88,7 @@ namespace Cache.Tests
             var entry = cacheDictionary.FindEntry(1);
             Assert.AreEqual(1, entry.Value);
             cacheDictionary.InsertEntry(4, 4);
-            var res = cacheDictionary.Invalidate(2);
+            var res = cacheDictionary.Invalidate(2, InvalidationSource.User);
             Assert.AreEqual(true, res);
             cacheDictionary.InsertEntry(5, 5);
 
@@ -107,7 +107,7 @@ namespace Cache.Tests
             cacheDictionary.InsertEntry(2, 2);
             cacheDictionary.InsertEntry(3, 3);
 
-            var res = cacheDictionary.Invalidate(4);
+            var res = cacheDictionary.Invalidate(4, InvalidationSource.User);
             Assert.AreEqual(false, res);
 
 
@@ -145,7 +145,7 @@ namespace Cache.Tests
             cacheDictionary.InsertEntry(2, 2);
             cacheDictionary.InsertEntry(3, 3);
 
-            var res = cacheDictionary.Invalidate(3);
+            var res = cacheDictionary.Invalidate(3, InvalidationSource.User);
             Assert.AreEqual(true, res);
 
             var entry = cacheDictionary.FindEntry(3);

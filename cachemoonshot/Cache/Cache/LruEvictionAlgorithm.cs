@@ -18,8 +18,7 @@ namespace Cache
             {
                 if (entries[i].ValidityBit == ValidityBit.Invalid)
                 {
-                    evictEntry = entries[i];
-                    break;
+                    return;
                 }
 
                 if (entries[i].AccessTime < evictEntry.AccessTime)
@@ -28,7 +27,7 @@ namespace Cache
                 }
             }
 
-            evictEntry.Invalidate();
+            evictEntry.Invalidate(InvalidationSource.Eviction);
         }
     }
 }

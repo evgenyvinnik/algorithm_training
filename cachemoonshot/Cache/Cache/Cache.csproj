@@ -37,6 +37,7 @@
     <Compile Include="Cache.cs" />
     <Compile Include="CacheDictionary.cs" />
     <Compile Include="CacheUtils.cs" />
+    <Compile Include="EntryUtils.cs" />
     <Compile Include="IMainStore.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="IEvictionAlgorithm.cs" />

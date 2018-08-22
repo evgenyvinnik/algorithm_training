@@ -1,5 +1,6 @@
 ﻿// © Evgeny Vinnik
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,6 +21,8 @@ namespace Cache
 
         readonly object thisLock = new object();
 
+        public event EventHandler<InvalidationEventArgs> EvictionListener;
+
         internal CacheDictionary(uint nWay, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
         {
             this.nWay = nWay;
@@ -34,7 +37,7 @@ namespace Cache
             {
                 if (cacheDictionary.ContainsKey(key))
                 {
-                    Invalidate(key);
+                    Invalidate(key, InvalidationSource.Replacement);
                 }
 
                 if (EntryCount >= nWay)
@@ -44,10 +47,18 @@ namespace Cache
                     DeleteInvalidEntries();
                 }
 
-                cacheDictionary[key] = new List<Entry<TKey, TValue>>
+                var entry = new Entry<TKey, TValue>(key, value);
+                entry.InvalidationListener += OnEntryInvalidated;
+
+                if (cacheDictionary.ContainsKey(key))
                 {
-                    new Entry<TKey, TValue>(key, value)
-                };
+                    cacheDictionary[key].Add(entry);
+                }
+                else
+                {
+                    cacheDictionary.Add(key, new List<Entry<TKey, TValue>>{ entry });
+                }
+
                 EntryCount++;
             }
         }
@@ -78,13 +89,13 @@ namespace Cache
                     case 1:
                         return list[0];
                     default:
-                        Invalidate(key);
+                        Invalidate(key, InvalidationSource.Replacement);
                         throw new MultipleEntriesException();
                 }
             }
         }
 
-        internal bool Invalidate(TKey key)
+        internal bool Invalidate(TKey key, InvalidationSource source)
         {
             lock (thisLock)
             {
@@ -96,7 +107,7 @@ namespace Cache
                 var list = cacheDictionary[key];
                 foreach (var entry in list)
                 {
-                    entry.Invalidate();
+                    entry.Invalidate(source);
                 }
 
                 return true;
@@ -130,6 +141,11 @@ namespace Cache
             {
                 cacheDictionary.Remove(key);
             }
+        }
+
+        void OnEntryInvalidated(object sender, InvalidationEventArgs e)
+        {
+            EvictionListener?.Invoke(this, e);
         }
     }
 }

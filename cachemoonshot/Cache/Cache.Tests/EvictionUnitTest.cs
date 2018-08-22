@@ -61,7 +61,7 @@ namespace Cache.Tests
 
             cacheDictionary.InsertEntry(1, 1);
             cacheDictionary.InsertEntry(2, 2);
-            cacheDictionary.Invalidate(2);
+            cacheDictionary.Invalidate(2, InvalidationSource.User);
             cacheDictionary.InsertEntry(3, 3);
             cacheDictionary.InsertEntry(4, 4);
 

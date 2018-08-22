@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Horses", "Horses\Horses.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Calculator\Calculator.csproj", "{E1C4F17A-976B-49C9-967A-1055FCCA4165}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake", "Cake\Cake.csproj", "{5A707C6A-B0BB-415F-8DBE-B93F17C91207}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -445,6 +447,18 @@ Global
 		{E1C4F17A-976B-49C9-967A-1055FCCA4165}.Release|x64.Build.0 = Release|Any CPU
 		{E1C4F17A-976B-49C9-967A-1055FCCA4165}.Release|x86.ActiveCfg = Release|Any CPU
 		{E1C4F17A-976B-49C9-967A-1055FCCA4165}.Release|x86.Build.0 = Release|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Debug|x86.Build.0 = Debug|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|x64.Build.0 = Release|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

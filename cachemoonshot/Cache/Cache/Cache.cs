@@ -89,6 +89,7 @@ namespace Cache
             for (int i = 0; i < CacheSets; i++)
             {
                 cacheDictionaries[i] = new CacheDictionary<TKey, TValue>(nWay, evictionAlgorithm);
+                cacheDictionaries[i].EvictionListener += OnCacheEntryInvalidated;
             }
         }
 
@@ -106,6 +107,10 @@ namespace Cache
         /// 
         /// </summary>
         public uint CacheSets { get; }
+
+        public event EventHandler CacheMissListener;
+
+        public event EventHandler<InvalidationEventArgs> CacheEvictionListener;
 
         /// <summary>
         /// 
@@ -150,7 +155,7 @@ namespace Cache
         /// <returns></returns>
         public bool DeleteValue(TKey key)
         {
-            return GetDictionary(key).Invalidate(key);
+            return GetDictionary(key).Invalidate(key, InvalidationSource.User);
         }
 
         /// <summary>
@@ -161,6 +166,8 @@ namespace Cache
         /// <returns></returns>
         TValue GetMainStoreAndCacheReinsert(TKey key, CacheDictionary<TKey, TValue> dictionary)
         {
+            CacheMissListener?.Invoke(this, EventArgs.Empty);
+
             var value = mainStore.GetValue(key);
             dictionary.InsertEntry(key, value);
             return value;
@@ -174,6 +181,11 @@ namespace Cache
         CacheDictionary<TKey, TValue> GetDictionary(TKey key)
         {
             return cacheDictionaries[(int)CacheUtils.ModTwo((uint)key.GetHashCode(), CacheSets)];
+        }
+
+        void OnCacheEntryInvalidated(object sender, InvalidationEventArgs e)
+        {
+            CacheEvictionListener?.Invoke(this, e);
         }
     }
 }

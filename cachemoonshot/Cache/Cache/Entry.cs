@@ -7,22 +7,6 @@ namespace Cache
     /// <summary>
     /// 
     /// </summary>
-    public enum ValidityBit
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        Invalid,
-
-        /// <summary>
-        /// 
-        /// </summary>
-        Valid
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
     public class Entry<TKey, TValue>
@@ -36,6 +20,8 @@ namespace Cache
         /// 
         /// </summary>
         volatile ValidityBit validityBit;
+
+        public event EventHandler<InvalidationEventArgs> InvalidationListener;
 
         /// <summary>
         /// 
@@ -82,12 +68,15 @@ namespace Cache
             private set => cacheValue = value;
         }
 
+
         /// <summary>
         /// 
         /// </summary>
-        public void Invalidate()
+        /// <param name="source"></param>
+        public void Invalidate(InvalidationSource source)
         {
             validityBit = ValidityBit.Invalid;
+            InvalidationListener?.Invoke(this, new InvalidationEventArgs { Source=source });
         }
     }
 }
