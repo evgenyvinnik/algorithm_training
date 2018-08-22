@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Cache
@@ -21,16 +22,32 @@ namespace Cache
 
         readonly object thisLock = new object();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nWay"></param>
+        /// <param name="evictionAlgorithm"></param>
         internal CacheDictionary(uint nWay, IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
         {
             this.nWay = nWay;
             this.evictionAlgorithm = evictionAlgorithm;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         internal event EventHandler<InvalidationEventArgs> EvictionListener;
 
+        /// <summary>
+        /// 
+        /// </summary>
         internal uint EntryCount { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         internal void InsertEntry(TKey key, TValue value)
         {
             lock (thisLock)
@@ -43,7 +60,13 @@ namespace Cache
                 if (EntryCount >= nWay)
                 {
                     var entries = cacheDictionary.Values.SelectMany(x => x).ToList();
-                    evictionAlgorithm.Evict(ref entries);
+                    var evictEntry = evictionAlgorithm.Evict(ref entries);
+                    if (evictEntry == null)
+                    {
+                        throw new ArgumentException("Eviction algorithm didn't provide entry to evict!");
+                    }
+
+                    evictEntry.Invalidate(InvalidationSource.Eviction);
                     DeleteInvalidEntries();
                 }
 
@@ -68,6 +91,11 @@ namespace Cache
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         internal Entry<TKey, TValue> FindEntry(TKey key)
         {
             lock (thisLock)

@@ -34,6 +34,9 @@ namespace Cache
             AccessTime = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Event handler that is being used to signal that cache entry was invalidated.
+        /// </summary>
         internal event EventHandler<InvalidationEventArgs> InvalidationListener;
 
         /// <summary>
@@ -69,11 +72,17 @@ namespace Cache
         }
 
         /// <summary>
-        /// Invalidates
+        /// Invalidates cache entry.
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source"><see cref="InvalidationSource"/> that will be used to signal <see cref="InvalidationListener"/>.</param>
         public void Invalidate(InvalidationSource source)
         {
+            // can't invalidate what is already invalid.
+            if (validityBit == ValidityBit.Invalid)
+            {
+                return;
+            }
+
             validityBit = ValidityBit.Invalid;
             InvalidationListener?.Invoke(
                 this,

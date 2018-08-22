@@ -11,14 +11,18 @@ namespace Cache
     /// <typeparam name="TValue"></typeparam>
     class MruEvictionAlgorithm<TKey, TValue> : IEvictionAlgorithm<TKey, TValue>
     {
-        public void Evict(ref List<Entry<TKey, TValue>> entries)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entries"></param>
+        public Entry<TKey, TValue> Evict(ref List<Entry<TKey, TValue>> entries)
         {
             var evictEntry = entries[0];
             for (int i = 1; i < entries.Count; i++)
             {
                 if (entries[i].ValidityBit == ValidityBit.Invalid)
                 {
-                    return;
+                    return entries[i];
                 }
 
                 if (entries[i].AccessTime > evictEntry.AccessTime)
@@ -27,7 +31,7 @@ namespace Cache
                 }
             }
 
-            evictEntry.Invalidate(InvalidationSource.Eviction);
+            return evictEntry;
         }
     }
 }
