@@ -5,14 +5,14 @@ using System.Collections.Generic;
 namespace Cache
 {
     /// <summary>
-    /// 
+    /// Interface for eviction algorithm implemenation.
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TKey">Cache entry key.</typeparam>
+    /// <typeparam name="TValue">Cache entry value.</typeparam>
     public interface IEvictionAlgorithm<TKey, TValue>
     {
         /// <summary>
-        /// Ev
+        /// Selects a cache entry to evict from a list of all entries in a cache set.
         /// </summary>
         /// <param name="entries">Flat list of entries among which an eviction should happen.
         /// Some of the entries might be marked as invalidated due to previous actions.

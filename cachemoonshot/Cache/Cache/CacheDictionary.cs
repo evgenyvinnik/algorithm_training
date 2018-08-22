@@ -61,7 +61,7 @@ namespace Cache
                 {
                     var entries = cacheDictionary.Values.SelectMany(x => x).ToList();
                     var evictEntry = evictionAlgorithm.Evict(ref entries);
-                    if (evictEntry == null)
+                    if (evictEntry == null || !entries.Contains(evictEntry))
                     {
                         throw new ArgumentException("Eviction algorithm didn't provide entry to evict!");
                     }
