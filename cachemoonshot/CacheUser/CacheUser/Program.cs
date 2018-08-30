@@ -7,33 +7,109 @@ namespace CacheUser
 {
     class Program
     {
-        const int entries = 10;
-        //const int entries = 1024 * 1024;
-        const int keyLength = 100;
+        //const int entries = 10;
+        const int entries = 1024 * 64;
+
         const int dataLength = 1024;
+        const int mainStoreLatencyMs = 1;
+        static int cacheEvictions;
+        static int cacheMisses;
 
-        static void Main(string[] args)
+        static int entriesRetrieve = 1024 * 4;
+
+        static void Main()
         {
-            MainStore<string, string> mainStore = new MainStore<string, string>();
-            Cache<string, string> cache = new Cache<string,string>();
+            var mainStore = new MainStore<int, string>();
+            var cache = new Cache<int, string>(32, 1024 * 16, new LruSortEvictionAlgorithm<int, string>());
 
-            // accessing elements from cache with fallback to mainstore
+            cache.CacheEvictionListener += CacheEvictionListener;
+            cache.CacheMissListener += CacheMissListener;
+            Generate1GbMainStore(ref mainStore, ref cache);
 
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            mainStore.GetValue()
+            long elapsedTicksCache = 0;
+            long elapsedTicksMainStore = 0;
+            long elapsedTicksMainStoreLatency = 0;
+            string value;
 
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
+            for (int tries = 0; tries < entriesRetrieve; tries++)
+            {
+                var key = Utilities.RandomGenerator.Next(entries);
 
-            Console.WriteLine($"Main store access {elapsedMs.ElapsedMilliseconds}");
+                //retrieving value from main store which is entirely in memory as well
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+                    value = mainStore.GetValue(key);
 
-            // accessing elements from mainstore only
+                    watch.Stop();
+                    elapsedTicksMainStore += watch.ElapsedTicks;
+                }
 
+                //retrieving value from main store which is entirely in memory as well
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+                    value = mainStore.GetValueLatency(key, mainStoreLatencyMs);
 
+                    watch.Stop();
+                    elapsedTicksMainStoreLatency += watch.ElapsedTicks;
+                }
+
+                //retrieving value from main store which is entirely in memory as well
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    try
+                    {
+                        value = cache.TryGetValue(key);
+                    }
+                    catch (CacheMissException e)
+                    {
+                        value = mainStore.GetValueLatency(key, mainStoreLatencyMs);
+                        cache.PutValue(key, value);
+                    }
+
+                    watch.Stop();
+                    elapsedTicksCache += watch.ElapsedTicks;
+                }
+            }
+
+            Console.WriteLine($"Cache access with main storefallback {elapsedTicksCache:N0} ticks");
+            Console.WriteLine($"Main store access with latency {elapsedTicksMainStoreLatency:N0} ticks");
+            Console.WriteLine($"Main store access in-memory {elapsedTicksMainStore:N0} ticks");
+            Console.WriteLine();
+            Console.WriteLine($"Total number of entries {entries:N0}, cache evictions {cacheEvictions:N0}");
+            Console.WriteLine($"Cache misses {cacheMisses:N0}");
         }
 
-        static void Generate1GbMainStore(ref MainStore<string, string> mainStore, ref Cache<string, string> cache)
+        static void CacheMissListener(object sender, EventArgs e)
         {
+            cacheMisses++;
+        }
+
+        static void CacheEvictionListener(object sender, InvalidationEventArgs e)
+        {
+            cacheEvictions++;
+        }
+
+        static void Generate1GbMainStore(ref MainStore<int, string> mainStore, ref Cache<int, string> cache)
+        {
+            for (int i = 0; i < entries; i++)
+            {
+                var value = Utilities.GenerateRandomString(dataLength);
+                mainStore.PutValue(i, value);
+                cache.PutValue(i, value);
+            }
+        }
+
+        internal static class Utilities
+        {
+            public static readonly Random RandomGenerator = new Random();
+
+            internal static string GenerateRandomString(int length)
+            {
+                var randomBytes = new byte[RandomGenerator.Next(length)];
+                RandomGenerator.NextBytes(randomBytes);
+                return Convert.ToBase64String(randomBytes);
+            }
         }
     }
 }

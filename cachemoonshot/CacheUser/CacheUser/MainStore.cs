@@ -1,6 +1,7 @@
 ﻿// © Evgeny Vinnik
 
 using System.Collections.Generic;
+using System.Threading;
 
 namespace CacheUser
 {
@@ -15,6 +16,12 @@ namespace CacheUser
 
         public TValue GetValue(TKey key)
         {
+            return values[key];
+        }
+
+        public TValue GetValueLatency(TKey key, int latencyMs)
+        {
+            Thread.Sleep(latencyMs);
             return values[key];
         }
 
