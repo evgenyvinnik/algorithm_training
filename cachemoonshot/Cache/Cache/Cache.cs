@@ -158,13 +158,13 @@ namespace Cache
 
             var entry = dictionary.FindEntry(key);
 
-            if (entry == null)
+            if (entry != null)
             {
-                CacheMissListener?.Invoke(this, EventArgs.Empty);
-                throw new CacheMissException($"Value with key {key} isn't cached.");
+                return entry.Value;
             }
 
-            return entry.Value;
+            CacheMissListener?.Invoke(this, EventArgs.Empty);
+            throw new CacheMissException($"Value with key {key} isn't cached.");
         }
 
         /// <summary>

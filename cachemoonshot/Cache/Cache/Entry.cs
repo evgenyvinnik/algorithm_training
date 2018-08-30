@@ -74,7 +74,8 @@ namespace Cache
         /// <summary>
         /// Invalidates cache entry.
         /// </summary>
-        /// <param name="source"><see cref="InvalidationSource"/> that will be used to signal <see cref="InvalidationListener"/>.</param>
+        /// <param name="source"><see cref="InvalidationSource"/> that will
+        /// be used to signal <see cref="InvalidationListener"/>.</param>
         public void Invalidate(InvalidationSource source)
         {
             // can't invalidate what is already invalid.

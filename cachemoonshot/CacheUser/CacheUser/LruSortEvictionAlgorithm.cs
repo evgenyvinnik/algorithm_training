@@ -7,10 +7,10 @@ namespace CacheUser
 {
     public class LruSortEvictionAlgorithm<TKey, TValue> : IEvictionAlgorithm<TKey, TValue>
     {
-        public void Evict(ref List<Entry<TKey, TValue>> entries)
+        public Entry<TKey, TValue> Evict(ref List<Entry<TKey, TValue>> entries)
         {
             entries.Sort(new LruComparer());
-            entries[0].Invalidate();
+            return entries[0];
         }
 
         class LruComparer : IComparer<Entry<TKey, TValue>>
