@@ -1,0 +1,34 @@
+Introduction
+
+The task was to implement cache that is entirely in memory.
+
+
+Design Principles
+
+I have decided that main class should expose only three public methods (besides constructor):
+
+- PutValue: puts key/value pair in the cache. Invalidating/evicting old entries as needed.
+
+- TryGetValue: attempt to get a value by the provided key.
+               I say attempt because if there is no valid entry exist in the cache an exception would be thrown.
+               It felt to me like a better approach than returning null because not all potential cache value types are nullable.
+
+- DeleteValue: deletes value from the cache. Behind the scenes the value is simply being invalidated instead of deleting it from the cache physically.
+
+
+
+We have three major classes in the Cache library:
+
+- Cache: class that contains public faced methods, and operates with Cache Dictionaries (aka Cache sets).
+         It also calculates hashes from the provided keys to determine in which set to put the cache entry.
+         Plus user can subscribe for cache miss and cache eviction listeners.
+
+- CacheDictionary: de-facto main class of the whole implementation.
+                   I have decided to go with it being Dictionary based because this data structure provides some
+                   nice properties like O(1) key search on average.
+
+- Entry: class to store cache entry key/value pair. Has information about last access time which could be used by eviction algorithms.
+
+
+Approaching the eviction algorithms we have set a requirement for them to return one entry to evict as a must.
+This way we always have some space to add new value into the cache.
