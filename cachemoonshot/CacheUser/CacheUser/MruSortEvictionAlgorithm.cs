@@ -5,6 +5,12 @@ using Cache;
 
 namespace CacheUser
 {
+    /// <summary>
+    /// This is a "lazy" most recently used eviction algorithm.
+    /// We sort the list by access time and evict last element.
+    /// </summary>
+    /// <typeparam name="TKey">Cache entry key.</typeparam>
+    /// <typeparam name="TValue">Cache entry value.</typeparam>
     class MruSortEvictionAlgorithm<TKey, TValue> : IEvictionAlgorithm<TKey, TValue>
     {
         public Entry<TKey, TValue> Evict(ref List<Entry<TKey, TValue>> entries)
