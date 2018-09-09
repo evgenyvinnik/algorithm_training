@@ -85,9 +85,12 @@ namespace Cache
                 if (EntryCount >= nWay)
                 {
                     // selected entry is invalidated and the entry deletion procedure is being called.
-                    InvalidateAndDelete(
-                        evictionAlgorithm.Evict(cacheDictionary.Values.ToList()).Key,
-                        InvalidationSource.Eviction);
+                    if (!InvalidateAndDelete(
+                            evictionAlgorithm.Evict(cacheDictionary.Values.ToList()).Key,
+                            InvalidationSource.Eviction))
+                    {
+                        throw new ArgumentException("Eviction algorithm didn't provide valid entry to evict!");
+                    }
                 }
 
                 // a new entry is then created and inserted into dictionary
