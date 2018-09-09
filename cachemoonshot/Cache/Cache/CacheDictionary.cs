@@ -92,11 +92,7 @@ namespace Cache
                 }
 
                 // a new entry is then created and inserted into dictionary
-                var entry = new Entry<TKey, TValue>(key, value);
-
-                entry.InvalidationListener += OnEntryInvalidated;
-
-                cacheDictionary.Add(key, entry);
+                cacheDictionary.Add(key, new Entry<TKey, TValue>(key, value));
 
                 EntryCount++;
             }
@@ -131,22 +127,16 @@ namespace Cache
                     return false;
                 }
 
-                cacheDictionary[key].Invalidate(source);
                 cacheDictionary.Remove(key);
                 EntryCount--;
+                EvictionListener?.Invoke(
+                    this,
+                    new InvalidationEventArgs
+                    {
+                        Source = source
+                    });
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Listener to invalidation events coming from cache entries.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Eviction event arguments.</param>
-        void OnEntryInvalidated(object sender, InvalidationEventArgs e)
-        {
-            //we are retranslating events to the cache object.
-            EvictionListener?.Invoke(this, e);
         }
     }
 }

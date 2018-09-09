@@ -5,23 +5,6 @@ using System;
 namespace Cache
 {
     /// <summary>
-    /// Enum to track validity bit states.
-    /// Used by <see cref="Cache{TKey,TValue}"/> class.
-    /// </summary>
-    public enum ValidityBit
-    {
-        /// <summary>
-        /// Cache entry is invalid.
-        /// </summary>
-        Invalid,
-
-        /// <summary>
-        /// Cache entry is valid.
-        /// </summary>
-        Valid
-    }
-
-    /// <summary>
     /// Enum used to report the source of cache invalidation.
     /// </summary>
     public enum InvalidationSource

@@ -198,12 +198,12 @@ namespace Cache
             return value;
         }
 
-    /// <summary>
-    /// Get cache set that is corresponding to cache entry key.
-    /// </summary>
-    /// <param name="key">Cache entry key.</param>
-    /// <returns>Cache set that corresponds to the key.</returns>
-    CacheDictionary<TKey, TValue> GetDictionary(TKey key)
+        /// <summary>
+        /// Get cache set that is corresponding to cache entry key.
+        /// </summary>
+        /// <param name="key">Cache entry key.</param>
+        /// <returns>Cache set that corresponds to the key.</returns>
+        CacheDictionary<TKey, TValue> GetDictionary(TKey key)
         {
             return cacheDictionaries[(int)CacheUtils.ModTwo((uint)key.GetHashCode(), CacheSets)];
         }
