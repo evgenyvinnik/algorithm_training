@@ -19,12 +19,12 @@ namespace Cache
         readonly uint nWay;
         
         /// <summary>
-        /// Cache set dictionary.
+        /// Cache set.
         /// <remarks>Dictionary was chosen as it provides reasonable
         /// balance between storage overhead vs search speed</remarks>
         /// </summary>
-        readonly Dictionary<TKey, List<Entry<TKey, TValue>>> cacheDictionary =
-            new Dictionary<TKey, List<Entry<TKey, TValue>>>();
+        readonly Dictionary<TKey, Entry<TKey, TValue>> cacheDictionary =
+            new Dictionary<TKey, Entry<TKey, TValue>>();
 
         /// <summary>
         /// Specified eviction algorithm.
@@ -70,14 +70,14 @@ namespace Cache
                 // if key already exists in the cache set - invalidate it.
                 if (cacheDictionary.ContainsKey(key))
                 {
-                    Invalidate(key, InvalidationSource.Replacement);
+                    InvalidateAndDelete(key, InvalidationSource.Replacement);
                 }
 
                 // if cache set has more entries than n-Way parameter
                 // we call the eviction algorithm
                 if (EntryCount >= nWay)
                 {
-                    var entries = cacheDictionary.Values.SelectMany(x => x).ToList();
+                    var entries = cacheDictionary.Values.ToList();
                     var evictEntry = evictionAlgorithm.Evict(ref entries);
 
                     // this is just a simple verification that eviction algorithm has provided
@@ -88,8 +88,7 @@ namespace Cache
                     }
 
                     // selected entry is invalidated and the entry deletion procedure is being called.
-                    evictEntry.Invalidate(InvalidationSource.Eviction);
-                    DeleteInvalidEntries();
+                    InvalidateAndDelete(evictEntry.Key, InvalidationSource.Eviction);
                 }
 
                 // a new entry is then created and inserted into dictionary
@@ -97,19 +96,7 @@ namespace Cache
 
                 entry.InvalidationListener += OnEntryInvalidated;
 
-                if (cacheDictionary.ContainsKey(key))
-                {
-                    cacheDictionary[key].Add(entry);
-                }
-                else
-                {
-                    cacheDictionary.Add(
-                        key,
-                        new List<Entry<TKey, TValue>>
-                        {
-                            entry
-                        });
-                }
+                cacheDictionary.Add(key, entry);
 
                 EntryCount++;
             }
@@ -124,44 +111,18 @@ namespace Cache
         {
             lock (thisLock)
             {
-                if (!cacheDictionary.ContainsKey(key))
-                {
-                    return null;
-                }
-
-                var list = new List<Entry<TKey, TValue>>();
-
-                foreach (var entry in cacheDictionary[key])
-                {
-                    if (entry.ValidityBit == ValidityBit.Valid)
-                    {
-                        list.Add(entry);
-                    }
-                }
-
-                switch (list.Count)
-                {
-                    case 0:
-                        return null;
-                    case 1:
-                        return list[0];
-                    default:
-                        // if by some reason we have more than 1 valid entry for a given key
-                        // we have a cache collision and we invalidate all entries.
-                        Invalidate(key, InvalidationSource.Replacement);
-                        return null;
-                }
+                return !cacheDictionary.ContainsKey(key) ? null : cacheDictionary[key];
             }
         }
 
         /// <summary>
-        /// Invalidates <see cref="Entry{TKey,Tvalue}"/> by provided key.
+        /// Invalidates <see cref="Entry{TKey,Tvalue}"/> by provided key and deletes it from the set.
         /// </summary>
         /// <param name="key">Cache entry key to invalidate.</param>
         /// <param name="source">Value indicating the source of invalidation request.</param>
         /// <returns>Returns true if cache entry invalidation is successful,
         /// false if key is missing in cache set.</returns>
-        internal bool Invalidate(TKey key, InvalidationSource source)
+        internal bool InvalidateAndDelete(TKey key, InvalidationSource source)
         {
             lock (thisLock)
             {
@@ -170,47 +131,10 @@ namespace Cache
                     return false;
                 }
 
-                var list = cacheDictionary[key];
-                foreach (var entry in list)
-                {
-                    entry.Invalidate(source);
-                }
-
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Deletes all <see cref="Entry{TKey,Tvalue}"/> that were marked as invalid.
-        /// </summary>
-        void DeleteInvalidEntries()
-        {
-            var keysToRemove = new List<TKey>();
-
-            foreach (var entry in cacheDictionary)
-            {
-                var list = entry.Value;
-
-                for (int i = list.Count - 1; i >= 0; i--)
-                {
-                    if (list[i].ValidityBit == ValidityBit.Valid)
-                    {
-                        continue;
-                    }
-
-                    list.RemoveAt(i);
-                    EntryCount--;
-                }
-
-                if (list.Count == 0)
-                {
-                    keysToRemove.Add(entry.Key);
-                }
-            }
-
-            foreach (var key in keysToRemove)
-            {
+                cacheDictionary[key].Invalidate(source);
                 cacheDictionary.Remove(key);
+                EntryCount--;
+                return true;
             }
         }
 

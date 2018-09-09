@@ -76,7 +76,7 @@ namespace Cache
         /// </summary>
         /// <param name="source"><see cref="InvalidationSource"/> that will
         /// be used to signal <see cref="InvalidationListener"/>.</param>
-        public void Invalidate(InvalidationSource source)
+        internal void Invalidate(InvalidationSource source)
         {
             // can't invalidate what is already invalid.
             if (validityBit == ValidityBit.Invalid)

@@ -15,7 +15,7 @@ namespace Cache.Tests
             var mainStore = new MainStore<int, int>();
             uint nWay = 2;
             uint cacheEntries = 4;
-            var cache = new Cache<int, int>(nWay, cacheEntries);
+            var cache = new Cache<int, int>(mainStore, nWay, cacheEntries);
 
             List<EventArgs> missEvents = new List<EventArgs>();
 
@@ -44,18 +44,21 @@ namespace Cache.Tests
             cache.PutValue(4, 4);
 
             // not in the cache
-            //int value;
-            var ex = Assert.ThrowsException<CacheMissException>(() => cache.TryGetValue(5));
-
-            Assert.AreEqual(1, missEvents.Count);
-            cache.PutValue(5, 5);
+            int value;
+            value = cache.TryGetValue(5);
+            Assert.AreEqual(5, value);
+            //value 5 isn't in the cache this prompts us to go to the store and reinsert it.
             Assert.AreEqual(InvalidationSource.Eviction, invalidationEvents[0]);
 
-            cache.DeleteValue(3);
-            Assert.AreEqual(InvalidationSource.User, invalidationEvents[1]);
+            Assert.AreEqual(1, missEvents.Count);
+            cache.PutValue(7, 7);
+            Assert.AreEqual(InvalidationSource.Eviction, invalidationEvents[1]);
+
+            cache.DeleteValue(2);
+            Assert.AreEqual(InvalidationSource.User, invalidationEvents[2]);
 
             cache.PutValue(4, 16);
-            Assert.AreEqual(InvalidationSource.Replacement, invalidationEvents[2]);
+            Assert.AreEqual(InvalidationSource.Replacement, invalidationEvents[3]);
         }
     }
 }
