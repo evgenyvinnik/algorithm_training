@@ -10,10 +10,11 @@ I have decided that main class should expose only three public methods (besides 
 - PutValue: puts key/value pair in the cache. Invalidating/evicting old entries as needed.
 
 - TryGetValue: attempt to get a value by the provided key.
-               I say attempt because if there is no valid entry exist in the cache an exception would be thrown.
-               It felt to me like a better approach than returning null because not all potential cache value types are nullable.
+               I say attempt because if there is no valid entry exist in the cache an attempt to get value from the main store
+               and inserting it into a corresponding store would be taken.
 
-- DeleteValue: deletes value from the cache. Behind the scenes the value is simply being invalidated instead of deleting it from the cache physically.
+- DeleteValue: deletion of value from the cache initiated by the user
+               (in addition we have cache entries deletions because of eviction and replacement (new value for existing key))
 
 
 
