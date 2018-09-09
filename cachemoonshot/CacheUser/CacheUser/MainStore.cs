@@ -2,10 +2,11 @@
 
 using System.Collections.Generic;
 using System.Threading;
+using Cache;
 
 namespace CacheUser
 {
-    class MainStore<TKey, TValue>
+    class MainStore<TKey, TValue> : IMainStore<TKey, TValue>
     {
         readonly Dictionary<TKey, TValue> values = new Dictionary<TKey, TValue>();
 
