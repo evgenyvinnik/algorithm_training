@@ -148,7 +148,7 @@ namespace Cache
         /// </summary>
         /// <remarks>Since we support custom eviction algorithms,
         /// if eviction algorithm fails to provide a valid entry to evict
-        /// an ArgumentException would be thrown.</remarks>
+        /// an exception would be thrown.</remarks>
         /// <param name="key">Cache entry key.</param>
         /// <param name="value">Cache entry value.</param>
         public void PutValue(TKey key, TValue value)

@@ -18,6 +18,6 @@ namespace Cache
         /// Some of the entries might be marked as invalidated due to previous actions.
         /// It is ok to return them as entries to evict or pick new.</param>
         /// <returns>Must return an entry to evict. Failure to provide such would result in exception.</returns>
-        Entry<TKey, TValue> Evict(ref List<Entry<TKey, TValue>> entries);
+        Entry<TKey, TValue> Evict(List<Entry<TKey, TValue>> entries);
     }
 }

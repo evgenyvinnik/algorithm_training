@@ -13,7 +13,7 @@ namespace CacheUser
     /// <typeparam name="TValue">Cache entry value.</typeparam>
     public class LruSortEvictionAlgorithm<TKey, TValue> : IEvictionAlgorithm<TKey, TValue>
     {
-        public Entry<TKey, TValue> Evict(ref List<Entry<TKey, TValue>> entries)
+        public Entry<TKey, TValue> Evict(List<Entry<TKey, TValue>> entries)
         {
             entries.Sort(new LruComparer());
             return entries[0];

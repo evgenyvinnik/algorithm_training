@@ -17,7 +17,7 @@ namespace Cache
         /// </summary>
         /// <param name="entries">Flat list of entries among which an eviction should happen.</param>
         /// <returns>Return an entry to evict.</returns>
-        public Entry<TKey, TValue> Evict(ref List<Entry<TKey, TValue>> entries)
+        public Entry<TKey, TValue> Evict(List<Entry<TKey, TValue>> entries)
         {
             Debug.Assert(entries.Count != 0);
 

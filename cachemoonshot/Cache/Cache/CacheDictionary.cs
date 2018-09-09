@@ -67,28 +67,27 @@ namespace Cache
             // we are locking the object to provide thread-safety.
             lock (thisLock)
             {
-                // if key already exists in the cache set - invalidate it.
+                // if key already exists in the cache set - replace the value.
                 if (cacheDictionary.ContainsKey(key))
                 {
-                    InvalidateAndDelete(key, InvalidationSource.Replacement);
+                    EvictionListener?.Invoke(
+                        this,
+                        new InvalidationEventArgs
+                        {
+                            Source = InvalidationSource.Replacement
+                        });
+                    cacheDictionary[key] = new Entry<TKey, TValue>(key, value);
+                    return;
                 }
 
                 // if cache set has more entries than n-Way parameter
                 // we call the eviction algorithm
                 if (EntryCount >= nWay)
                 {
-                    var entries = cacheDictionary.Values.ToList();
-                    var evictEntry = evictionAlgorithm.Evict(ref entries);
-
-                    // this is just a simple verification that eviction algorithm has provided
-                    // a valid entry to evict
-                    if (evictEntry == null || !entries.Contains(evictEntry))
-                    {
-                        throw new ArgumentException("Eviction algorithm didn't provide entry to evict!");
-                    }
-
                     // selected entry is invalidated and the entry deletion procedure is being called.
-                    InvalidateAndDelete(evictEntry.Key, InvalidationSource.Eviction);
+                    InvalidateAndDelete(
+                        evictionAlgorithm.Evict(cacheDictionary.Values.ToList()).Key,
+                        InvalidationSource.Eviction);
                 }
 
                 // a new entry is then created and inserted into dictionary
@@ -135,6 +134,7 @@ namespace Cache
                     {
                         Source = source
                     });
+
                 return true;
             }
         }
