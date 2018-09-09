@@ -25,13 +25,6 @@ namespace Cache
 
             for (int i = 1; i < entries.Count; i++)
             {
-                // since we need to provide only one entry we are being smart here
-                // and automatically returning the first invalidated entry no matter when it was used
-                if (entries[i].ValidityBit == ValidityBit.Invalid)
-                {
-                    return entries[i];
-                }
-
                 if (entries[i].AccessTime > evictEntry.AccessTime)
                 {
                     evictEntry = entries[i];

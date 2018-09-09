@@ -25,7 +25,7 @@ namespace Cache.Tests
 
             cacheDictionary.InsertEntry(5, 5);
 
-            var entryMissing = cacheDictionary.FindEntry(2);
+            var entryMissing = cacheDictionary.FindEntry(1);
             Assert.IsNull(entryMissing);
         }
 
@@ -42,12 +42,12 @@ namespace Cache.Tests
             cacheDictionary.InsertEntry(3, 3);
             cacheDictionary.InsertEntry(4, 4);
 
-            var entry = cacheDictionary.FindEntry(2);
-            Assert.AreEqual(2, entry.Value);
+            var entry = cacheDictionary.FindEntry(1);
+            Assert.AreEqual(1, entry.Value);
 
             cacheDictionary.InsertEntry(5, 5);
 
-            var entryMissing = cacheDictionary.FindEntry(2);
+            var entryMissing = cacheDictionary.FindEntry(1);
             Assert.IsNull(entryMissing);
         }
 
@@ -61,7 +61,7 @@ namespace Cache.Tests
 
             cacheDictionary.InsertEntry(1, 1);
             cacheDictionary.InsertEntry(2, 2);
-            cacheDictionary.Invalidate(2, InvalidationSource.User);
+            cacheDictionary.InvalidateAndDelete(2, InvalidationSource.User);
             cacheDictionary.InsertEntry(3, 3);
             cacheDictionary.InsertEntry(4, 4);
 

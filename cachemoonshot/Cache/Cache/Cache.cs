@@ -22,6 +22,11 @@ namespace Cache
         public const uint MaxCacheEntries = 0x7FFFFFFF;
 
         /// <summary>
+        /// Main fall back data store.
+        /// </summary>
+        readonly IMainStore<TKey, TValue> mainStore;
+
+        /// <summary>
         /// Cache sets. Each contains a maximum of <see cref="NWay"/> entries.
         /// </summary>
         readonly CacheDictionary<TKey, TValue>[] cacheDictionaries;
@@ -31,8 +36,9 @@ namespace Cache
         /// Creates 4-way set associative cache with 128 cache entries.
         /// <see cref="LruEvictionAlgorithm{TKey,Tvalue}"/> is set as default.
         /// </summary>
+        /// <param name="mainStore">Main fall back data store.</param>
         /// <inheritdoc />
-        public Cache() : this(4, 128)
+        public Cache(IMainStore<TKey, TValue> mainStore) : this(mainStore, 4, 128)
         {
         }
 
@@ -41,11 +47,12 @@ namespace Cache
         /// Creates n-way set associative cache with variable number of cache entries.
         /// <see cref="LruEvictionAlgorithm{TKey,Tvalue}"/> is set as default.
         /// </summary>
+        /// <param name="mainStore">Main fall back data store.</param>
         /// <param name="nWay">N-way parameter for the cache. Should be a power of 2.</param>
         /// <param name="totalCacheEntries">Total number of cache entries. Should be a power of 2.</param>
         /// <inheritdoc />
-        public Cache(uint nWay, uint totalCacheEntries) :
-            this(nWay, totalCacheEntries, new LruEvictionAlgorithm<TKey, TValue>())
+        public Cache(IMainStore<TKey, TValue> mainStore, uint nWay, uint totalCacheEntries) :
+            this(mainStore, nWay, totalCacheEntries, new LruEvictionAlgorithm<TKey, TValue>())
         {
         }
 
@@ -54,10 +61,12 @@ namespace Cache
         /// Creates n-way set associative cache with variable number of cache entries.
         /// It is possible to specify custom eviction algorithm.
         /// </summary>
+        /// <param name="mainStore">Main fall back data store.</param>
         /// <param name="nWay">N-way parameter for the cache. Should be a power of 2.</param>
         /// <param name="totalCacheEntries">Total number of cache entries. Should be a power of 2.</param>
         /// <param name="evictionAlgorithm">Eviction algorithm.</param>
         public Cache(
+            IMainStore<TKey, TValue> mainStore,
             uint nWay,
             uint totalCacheEntries,
             IEvictionAlgorithm<TKey, TValue> evictionAlgorithm)
@@ -91,6 +100,8 @@ namespace Cache
             {
                 throw new ArgumentException("Eviction algorithm isn't specified!");
             }
+
+            this.mainStore = mainStore ?? throw new ArgumentException("Main data store isn't specified!");
 
             NWay = nWay;
             TotalCacheEntries = totalCacheEntries;
@@ -148,7 +159,7 @@ namespace Cache
         /// <summary>
         /// Try getting value from the cache.
         /// If the value in cache is missing or invalidated,
-        /// an <see cref="CacheMissException"/> is thrown.
+        /// an attempt to get if from the <see cref="IMainStore{TKey,TValue}"/> would be taken.
         /// </summary>
         /// <param name="key">Cache entry key.</param>
         /// <returns>Cache entry value.</returns>
@@ -158,13 +169,7 @@ namespace Cache
 
             var entry = dictionary.FindEntry(key);
 
-            if (entry != null)
-            {
-                return entry.Value;
-            }
-
-            CacheMissListener?.Invoke(this, EventArgs.Empty);
-            throw new CacheMissException($"Value with key {key} isn't cached.");
+            return entry != null ? entry.Value : GetMainStoreAndCacheReinsert(key, dictionary);
         }
 
         /// <summary>
@@ -174,15 +179,31 @@ namespace Cache
         /// <returns>Returns true if deletion is successful, false if key is missing in cache.</returns>
         public bool DeleteValue(TKey key)
         {
-            return GetDictionary(key).Invalidate(key, InvalidationSource.User);
+            return GetDictionary(key).InvalidateAndDelete(key, InvalidationSource.User);
         }
 
         /// <summary>
-        /// Get cache set that is corresponding to cache entry key.
+        /// In case of valid key isn't found in cache,
+        /// try getting value from the main store and insert it into a corresponding store.
         /// </summary>
         /// <param name="key">Cache entry key.</param>
-        /// <returns>Cache set that corresponds to the key.</returns>
-        CacheDictionary<TKey, TValue> GetDictionary(TKey key)
+        /// <param name="dictionary">Cache set.</param>
+        /// <returns>Value that corresponds to the key.</returns>
+        TValue GetMainStoreAndCacheReinsert(TKey key, CacheDictionary<TKey, TValue> dictionary)
+        {
+            CacheMissListener?.Invoke(this, EventArgs.Empty);
+
+            var value = mainStore.GetValue(key);
+            dictionary.InsertEntry(key, value);
+            return value;
+        }
+
+    /// <summary>
+    /// Get cache set that is corresponding to cache entry key.
+    /// </summary>
+    /// <param name="key">Cache entry key.</param>
+    /// <returns>Cache set that corresponds to the key.</returns>
+    CacheDictionary<TKey, TValue> GetDictionary(TKey key)
         {
             return cacheDictionaries[(int)CacheUtils.ModTwo((uint)key.GetHashCode(), CacheSets)];
         }

@@ -54,7 +54,7 @@ namespace CacheUser
         static void Main()
         {
             var mainStore = new MainStore<int, string>();
-            var cache = new Cache<int, string>(cacheNWays, cacheSize, new LruSortEvictionAlgorithm<int, string>());
+            var cache = new Cache<int, string>(mainStore, cacheNWays, cacheSize, new LruSortEvictionAlgorithm<int, string>());
 
             cache.CacheEvictionListener += CacheEvictionListener;
             cache.CacheMissListener += CacheMissListener;
@@ -97,15 +97,7 @@ namespace CacheUser
                 {
                     var watch = System.Diagnostics.Stopwatch.StartNew();
 
-                    try
-                    {
-                        value = cache.TryGetValue(key);
-                    }
-                    catch (CacheMissException e)
-                    {
-                        value = mainStore.GetValueLatency(key, mainStoreLatencyMs);
-                        cache.PutValue(key, value);
-                    }
+                    value = cache.TryGetValue(key);
 
                     watch.Stop();
                     elapsedTicksCache += watch.ElapsedTicks;

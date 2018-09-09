@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Cache.Tests
 {
-    class MainStore<TKey, TValue>
+    class MainStore<TKey, TValue> : IMainStore<TKey, TValue>
     {
         readonly Dictionary<TKey, TValue> values = new Dictionary<TKey, TValue>();
 
