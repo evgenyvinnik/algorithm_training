@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Calculator\Ca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cake", "Cake\Cake.csproj", "{5A707C6A-B0BB-415F-8DBE-B93F17C91207}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LInkedInInterview", "LInkedInInterview\LInkedInInterview.csproj", "{98279BFE-95BF-44CA-878D-07A6AA39653D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -459,6 +461,18 @@ Global
 		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|x64.Build.0 = Release|Any CPU
 		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|x86.ActiveCfg = Release|Any CPU
 		{5A707C6A-B0BB-415F-8DBE-B93F17C91207}.Release|x86.Build.0 = Release|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Debug|x64.Build.0 = Debug|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Debug|x86.Build.0 = Debug|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Release|x64.ActiveCfg = Release|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Release|x64.Build.0 = Release|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Release|x86.ActiveCfg = Release|Any CPU
+		{98279BFE-95BF-44CA-878D-07A6AA39653D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
