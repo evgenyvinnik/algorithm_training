@@ -1,0 +1,178 @@
+﻿Question Description: Write a function that, given a list of integers (both positive and negative) returns the sum of the contiguous subsequence with maximum sum.
+
+
+
+Thus, given the sequence (1, 2, -4, [1, 3, -2, 3], -1) it should return 5.
+
+
+int maxSum(int[] array)
+{
+    //go over elements
+    //combine all positive number together
+    //combine all negative numbers together
+    // we will be left with an array of interleaving positive and negative numbers
+    // taking example we will get
+    // start from element 0
+    // now
+    // if next negative + next positive give us negative or zero -> start calculating new sum
+    // otherwise take the negative fine and proceed with calculating of contiguous subsequence
+    // report the largest sum.
+    
+
+    int start = 0;
+    if(modified_array[start] < 0)
+    {
+        start = 1;
+    }
+
+    int max_sum = modified_array[start];
+    int local_sum = modified_array[i];
+
+    for(int i = start; i < modified_array.Length;)
+    {
+        if(i+=2 >= modified_array.Length)
+        {
+            break;
+        }
+
+        if (modified_array[i+1] + modified_array[i+2] > 0)
+        {
+            local_sum += modified_array[i+1] + modified_array[i+2];
+            i+=2;
+        }
+        else
+        {
+            i+=2;
+            local_sum = modified_array[i];
+        }
+
+        if (local_sum > max_sum)
+            max_sum = local_sum;
+   }
+    
+    return max_sum;
+}
+ // 3, -4, 4, -2, 3, -1
+ // start = 0
+ // max_sum = 3
+ // local_sum = 3
+ 
+ // entering loop (i = 0)
+ // -4 + 4 == 0
+ // i = 2
+ // local_sum = 4
+
+ // entering loop again
+ // -2 + 3 == 1 > 0
+ // local_sum += -2 + 3;
+ // local_sum = 5
+ // i += 2 -> i = 4
+ // modified_array[i] = 3
+
+//
+
+
+
+// List of integers, int N
+// List of integers 
+
+// 1->2->3->4->5 N = 2
+// o/p 3->4->5->1->2
+
+void ListRotation(List<int> list, int N)
+{
+    list.Reverse();//O(N) N - number of elements in the list
+
+    int index = N%list.Count;//O(1)
+
+    list.Reverse(0, index);//O(N)
+    list.Reverse(index, list.Count-index);//O(N);
+
+    return list;
+}
+
+class Node
+{
+    int value;
+    Node next;
+}
+
+
+
+// 3->2->1->null
+Node ListReversal(Node head)
+{
+    Node p = Node head;
+    ListReversal(ref head, ref p);
+    return head;
+}
+
+Node ListReversal(ref Node head, ref Node p)
+{
+    if(p->next == null)
+    {
+        head = p;
+        return head;
+    }
+    else
+    {
+        var t = ListReversal(head, p->next);
+
+        p->next = null;
+        t->next = p;
+
+        return p;
+    }
+}
+
+//test function
+// 1->2->3->null
+//ListReversal(head = 1 -> 2 -> 3 -> null)
+// ListReversal(head = 1 -> 2 -> 3 -> null, p = 1 -> 2 -> 3 -> null)
+    // ListReversal(head = 1 -> 2 -> 3 -> null, p = 2 -> 3 -> null)
+        // ListReversal(head = 1 -> 2 -> 3 -> null, 3 -> null)
+            // head = 3->null
+    // var t = 3->null
+    // head = 3->null
+    // p-> 2 -> 3 -> null
+    // p-> 2 ->null
+    // t = 3->2->null
+    // head 3->2->null
+    // return p =  2->null
+// var t = 2->null
+//  p = 1 -> 2 -> 3 -> null
+// p->next = null
+// p = 1->null
+// t->next = p;
+// 2->1->null
+// head -> 3->2->1->null
+// return 1->null;
+// head -> 3->2->1->null
+
+// ListReversal(head = 1 -> 2 -> 3 -> null, 3 -> null)
+
+
+// test function
+// // 1->2->3->null
+// ListReversal(head = 1 -> 2 -> 3 -> null)
+// head->next != null
+// var p = ListReversal(head->next = 2->3->null)
+// var p = ListReversal(2->3->null)
+    // head->next != null
+    // var p = ListReversal(head->next = 3->null)
+    //  var p = ListReversal(3->null)
+        // head->next == null
+        // 3->null
+        // return 3->null
+
+    // p = 3 -> null
+    // head = 2->3->null
+    // head = 2-> null
+
+    // p-> next = head
+    // p= 3->2->null
+
+//p->3->2->null
+//head->1->2->3->null
+//head->1->null
+//p
