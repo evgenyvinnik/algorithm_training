@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flexport", "Flexport\Flexport.csproj", "{730DF741-6A43-4E98-9AC1-D821DE04E4F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flexport2", "Flexport2\Flexport2.csproj", "{EA5BC213-1E67-4E63-ACE3-E18EEEAE5082}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{730DF741-6A43-4E98-9AC1-D821DE04E4F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730DF741-6A43-4E98-9AC1-D821DE04E4F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730DF741-6A43-4E98-9AC1-D821DE04E4F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730DF741-6A43-4E98-9AC1-D821DE04E4F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA5BC213-1E67-4E63-ACE3-E18EEEAE5082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA5BC213-1E67-4E63-ACE3-E18EEEAE5082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA5BC213-1E67-4E63-ACE3-E18EEEAE5082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA5BC213-1E67-4E63-ACE3-E18EEEAE5082}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED7CA50C-6F75-41C3-869B-E8E6F9A6C5BF}
+	EndGlobalSection
+EndGlobal
