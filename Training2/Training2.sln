@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trie2", "Trie2\Trie2.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirBnbTest", "AirBnbTest\AirBnbTest.csproj", "{A60B815E-B904-4EDF-844D-FD3238192D66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HugeMapSlice", "HugeMapSlice\HugeMapSlice.csproj", "{51FF5AD4-280A-426B-9E83-0683EC78CE4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elevator", "Elevator\Elevator.csproj", "{226DEBDE-6A6C-4123-B731-43F1C8B0E457}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{A60B815E-B904-4EDF-844D-FD3238192D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A60B815E-B904-4EDF-844D-FD3238192D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A60B815E-B904-4EDF-844D-FD3238192D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51FF5AD4-280A-426B-9E83-0683EC78CE4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51FF5AD4-280A-426B-9E83-0683EC78CE4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51FF5AD4-280A-426B-9E83-0683EC78CE4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51FF5AD4-280A-426B-9E83-0683EC78CE4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{226DEBDE-6A6C-4123-B731-43F1C8B0E457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{226DEBDE-6A6C-4123-B731-43F1C8B0E457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{226DEBDE-6A6C-4123-B731-43F1C8B0E457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{226DEBDE-6A6C-4123-B731-43F1C8B0E457}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
