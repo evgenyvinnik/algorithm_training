@@ -114,6 +114,17 @@ Trial Only:
 
                 File.WriteAllText("test6.html", result);
             }
+
+
+            {
+                string input =
+                    @"Base Only:  
+C:\Windows\system32\disksnapshot.exe";
+
+                var result = Markdig.Markdown.ToHtml(input);
+
+                File.WriteAllText("test7.html", result);
+            }
         }
     }
 }
